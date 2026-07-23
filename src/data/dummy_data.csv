@@ -1,0 +1,301 @@
+Usia,JK,Pendidikan,Riwayat_Keluarga,Persentase nilai identifikasi warna,Tingkat Keparahan,Kemampuan identifikasi Warna,R,I,A,S,E,C,Alat_Bantu_Penglihatan,Penyakit_Mata_Lain,Karier,JobZone,ColorReq,Label
+17,P,SMA,Tidak,"92,86",Normal,33,9,22,8,11,14,12,1,1,Data Analyst,4,Rendah,Direkomendasikan
+34,L,S1,Ya,"78,57",Ringan,27,8,11,9,22,11,8,0,1,Dokter,5,Tinggi,Direkomendasikan
+24,L,SMA,Tidak,"7,14",Berat,14,24,11,8,11,9,13,0,0,Polisi,3,Sedang,Kurang Direkomendasikan
+26,L,D3,Tidak,"92,86",Normal,31,12,10,8,12,12,23,1,0,Akuntan,4,Rendah,Direkomendasikan
+23,L,S1,Ya,100,Normal,33,12,10,8,24,13,10,0,1,Guru,4,Rendah,Direkomendasikan
+31,P,D3,Ya,"78,57",Ringan,30,23,11,8,11,9,11,1,0,Polisi,3,Sedang,Direkomendasikan
+21,L,S1,Tidak,"71,43",Ringan,26,22,9,7,11,9,10,0,1,Polisi,3,Sedang,Direkomendasikan
+22,P,S1,Ya,"57,14",Sedang,19,11,10,10,24,13,7,1,0,Guru,4,Rendah,Direkomendasikan
+30,P,D3,Tidak,"92,86",Normal,33,9,9,10,24,13,8,0,1,Guru,4,Rendah,Direkomendasikan
+27,P,D3,Tidak,"57,14",Sedang,22,21,7,8,10,14,14,1,0,Pilot,5,Tinggi,Kurang Direkomendasikan
+28,L,S2,Tidak,"92,86",Normal,32,12,8,24,10,10,9,0,0,Desainer Grafis,3,Sedang,Direkomendasikan
+17,L,S2,Tidak,100,Normal,30,22,7,11,8,8,8,1,1,Polisi,3,Sedang,Direkomendasikan
+31,P,SMA,Tidak,100,Normal,30,11,12,11,8,10,23,1,0,Akuntan,4,Rendah,Direkomendasikan
+19,P,SMA,Tidak,"92,86",Normal,31,7,6,9,25,11,7,0,0,Perawat,4,Sedang,Direkomendasikan
+28,P,SMA,Tidak,100,Normal,35,9,23,11,10,7,9,1,1,Programmer,4,Rendah,Direkomendasikan
+33,P,SMA,Ya,50,Sedang,21,8,6,22,9,11,13,0,0,Make Up Artist,2,Tinggi,Kurang Direkomendasikan
+22,P,D3,Ya,"71,43",Ringan,28,14,14,7,22,10,12,1,1,Guru,4,Rendah,Direkomendasikan
+31,L,S1,Ya,"71,43",Ringan,25,9,9,22,11,10,11,0,1,Make Up Artist,2,Tinggi,Direkomendasikan
+22,L,S1,Ya,100,Normal,32,24,10,11,12,8,11,0,1,Pilot,5,Tinggi,Direkomendasikan
+26,L,S2,Ya,100,Normal,31,22,9,11,11,9,10,0,1,Pilot,5,Tinggi,Direkomendasikan
+20,L,S1,Ya,100,Normal,32,9,23,12,10,13,11,0,0,Data Analyst,4,Rendah,Direkomendasikan
+32,L,D3,Tidak,100,Normal,31,13,22,6,11,10,11,1,0,Programmer,4,Rendah,Direkomendasikan
+32,L,SMA,Ya,"71,43",Ringan,32,9,11,24,12,9,11,1,1,Desainer Grafis,3,Sedang,Direkomendasikan
+34,P,S2,Ya,100,Normal,30,13,9,23,9,11,9,1,1,Make Up Artist,2,Tinggi,Direkomendasikan
+25,L,S2,Tidak,"85,71",Ringan,27,22,8,9,12,10,9,0,0,Pilot,5,Tinggi,Direkomendasikan
+21,P,SMA,Tidak,"42,86",Sedang,23,13,23,10,9,11,11,0,0,Data Analyst,4,Rendah,Direkomendasikan
+18,L,D3,Tidak,"85,71",Ringan,25,13,10,8,22,8,10,0,0,Guru,4,Rendah,Direkomendasikan
+33,L,S2,Tidak,100,Normal,30,21,8,11,8,7,10,0,0,Polisi,3,Sedang,Direkomendasikan
+28,P,D3,Ya,"78,57",Ringan,27,11,23,10,12,12,10,1,1,Data Analyst,4,Rendah,Direkomendasikan
+21,P,S1,Tidak,"78,57",Ringan,28,9,11,11,10,11,21,1,0,Akuntan,4,Rendah,Direkomendasikan
+31,P,D3,Tidak,"92,86",Normal,32,8,23,10,10,6,11,0,0,Programmer,4,Rendah,Direkomendasikan
+23,P,D3,Tidak,"92,86",Normal,31,11,12,7,23,8,10,0,0,Guru,4,Rendah,Direkomendasikan
+35,P,S2,Tidak,"35,71",Sedang,18,8,11,9,10,11,22,0,1,Akuntan,4,Rendah,Direkomendasikan
+25,L,D3,Tidak,100,Normal,31,23,10,13,9,11,13,1,1,Pilot,5,Tinggi,Direkomendasikan
+21,L,S2,Tidak,"64,29",Sedang,20,22,12,12,8,7,12,0,1,Pilot,5,Tinggi,Kurang Direkomendasikan
+33,P,S2,Ya,"92,86",Normal,30,10,11,12,23,11,11,1,0,Guru,4,Rendah,Direkomendasikan
+24,P,S1,Tidak,"42,86",Sedang,25,10,12,24,7,11,11,0,0,Desainer Grafis,3,Sedang,Direkomendasikan
+23,P,S1,Tidak,"92,86",Normal,32,8,21,9,9,10,11,1,0,Programmer,4,Rendah,Direkomendasikan
+31,L,D3,Tidak,"85,71",Ringan,28,10,10,11,22,13,12,0,0,Dokter,5,Tinggi,Direkomendasikan
+24,L,SMA,Ya,"35,71",Sedang,26,22,12,10,9,10,9,1,1,Pilot,5,Tinggi,Kurang Direkomendasikan
+21,P,D3,Tidak,"21,43",Berat,15,11,11,12,23,10,12,0,0,Guru,4,Rendah,Kurang Direkomendasikan
+32,L,SMA,Tidak,100,Normal,31,24,10,6,11,10,9,0,0,Polisi,3,Sedang,Direkomendasikan
+18,P,D3,Ya,"42,86",Sedang,20,21,11,11,10,10,9,1,0,Polisi,3,Sedang,Direkomendasikan
+19,L,SMA,Tidak,"92,86",Normal,29,10,7,8,20,10,10,1,1,Dokter,5,Tinggi,Direkomendasikan
+34,P,SMA,Tidak,"92,86",Normal,31,5,11,7,22,9,9,1,1,Perawat,4,Sedang,Direkomendasikan
+32,P,SMA,Tidak,"35,71",Sedang,22,23,11,14,9,10,10,0,1,Polisi,3,Sedang,Direkomendasikan
+32,L,SMA,Ya,"14,29",Berat,14,10,12,12,20,9,11,1,0,Guru,4,Rendah,Kurang Direkomendasikan
+25,P,SMA,Ya,50,Sedang,23,11,10,13,11,10,22,1,0,Akuntan,4,Rendah,Direkomendasikan
+26,L,SMA,Tidak,"92,86",Normal,31,22,8,10,8,12,12,0,1,Pilot,5,Tinggi,Direkomendasikan
+17,L,S1,Tidak,"92,86",Normal,30,9,11,10,20,9,9,0,1,Dokter,5,Tinggi,Direkomendasikan
+19,P,S1,Tidak,"64,29",Sedang,16,10,11,22,10,9,14,1,0,Desainer Grafis,3,Sedang,Direkomendasikan
+30,P,S1,Tidak,100,Normal,31,23,9,8,11,7,10,1,1,Pilot,5,Tinggi,Direkomendasikan
+30,P,S2,Tidak,100,Normal,31,12,14,10,22,9,10,0,0,Guru,4,Rendah,Direkomendasikan
+29,P,S2,Tidak,"85,71",Ringan,28,10,9,23,7,10,7,0,1,Desainer Grafis,3,Sedang,Direkomendasikan
+34,L,SMA,Tidak,"85,71",Ringan,25,13,11,22,15,12,10,1,0,Desainer Grafis,3,Sedang,Direkomendasikan
+26,P,S2,Tidak,"78,57",Ringan,24,6,24,11,8,10,13,0,1,Data Analyst,4,Rendah,Direkomendasikan
+30,L,S2,Ya,"64,29",Sedang,23,8,14,12,22,11,12,0,0,Guru,4,Rendah,Direkomendasikan
+28,L,D3,Ya,"35,71",Sedang,21,10,8,22,9,8,11,1,0,Desainer Grafis,3,Sedang,Direkomendasikan
+35,L,SMA,Ya,"78,57",Ringan,30,10,9,7,23,11,9,1,0,Guru,4,Rendah,Direkomendasikan
+30,L,S1,Tidak,"78,57",Ringan,30,23,8,7,8,7,10,0,1,Pilot,5,Tinggi,Direkomendasikan
+20,L,SMA,Tidak,"78,57",Ringan,30,13,12,7,22,10,7,1,0,Perawat,4,Sedang,Direkomendasikan
+24,P,S1,Ya,"42,86",Sedang,26,12,8,22,8,9,12,0,1,Make Up Artist,2,Tinggi,Kurang Direkomendasikan
+20,L,S1,Tidak,"57,14",Sedang,26,14,14,21,10,12,13,0,0,Desainer Grafis,3,Sedang,Direkomendasikan
+27,L,SMA,Tidak,"78,57",Ringan,28,9,9,22,9,9,12,0,1,Make Up Artist,2,Tinggi,Direkomendasikan
+27,L,S1,Tidak,"85,71",Ringan,29,9,9,9,10,10,22,1,0,Akuntan,4,Rendah,Direkomendasikan
+29,P,D3,Ya,100,Normal,34,11,7,11,24,7,9,1,0,Guru,4,Rendah,Direkomendasikan
+17,L,S2,Tidak,100,Normal,32,11,9,21,10,13,9,1,0,Desainer Grafis,3,Sedang,Direkomendasikan
+27,L,S2,Ya,"85,71",Ringan,31,11,10,8,23,12,9,0,0,Guru,4,Rendah,Direkomendasikan
+27,L,S2,Tidak,100,Normal,34,8,7,8,22,7,9,1,0,Dokter,5,Tinggi,Direkomendasikan
+19,L,D3,Tidak,100,Normal,32,10,10,7,9,10,22,1,0,Akuntan,4,Rendah,Direkomendasikan
+26,P,S1,Ya,100,Normal,32,8,6,22,9,8,11,0,0,Make Up Artist,2,Tinggi,Direkomendasikan
+19,L,S2,Tidak,"92,86",Normal,30,11,9,8,22,11,10,0,0,Guru,4,Rendah,Direkomendasikan
+30,P,SMA,Tidak,"92,86",Normal,31,9,11,12,21,11,9,0,0,Perawat,4,Sedang,Direkomendasikan
+29,P,SMA,Tidak,100,Normal,31,9,10,11,20,8,11,0,1,Guru,4,Rendah,Direkomendasikan
+17,L,S2,Tidak,50,Sedang,22,12,10,24,12,13,14,1,0,Make Up Artist,2,Tinggi,Kurang Direkomendasikan
+22,L,S2,Tidak,100,Normal,31,5,23,10,9,9,10,0,0,Programmer,4,Rendah,Direkomendasikan
+19,P,SMA,Ya,"92,86",Normal,32,22,11,10,10,10,10,1,0,Polisi,3,Sedang,Direkomendasikan
+21,L,S2,Tidak,100,Normal,30,8,10,8,10,10,23,0,0,Akuntan,4,Rendah,Direkomendasikan
+17,P,D3,Ya,"64,29",Sedang,21,10,7,8,10,10,22,1,0,Akuntan,4,Rendah,Direkomendasikan
+25,L,S2,Ya,"92,86",Normal,31,13,23,12,8,12,11,0,1,Programmer,4,Rendah,Direkomendasikan
+21,L,SMA,Ya,"14,29",Berat,16,23,8,6,6,14,9,1,1,Polisi,3,Sedang,Kurang Direkomendasikan
+18,L,D3,Ya,100,Normal,32,24,11,8,9,8,10,0,1,Pilot,5,Tinggi,Direkomendasikan
+24,L,S1,Tidak,"92,86",Normal,31,13,12,9,23,11,10,1,1,Dokter,5,Tinggi,Direkomendasikan
+29,P,S2,Tidak,"92,86",Normal,33,9,24,11,8,11,8,1,0,Programmer,4,Rendah,Direkomendasikan
+19,L,D3,Ya,100,Normal,30,11,22,10,11,9,10,0,0,Programmer,4,Rendah,Direkomendasikan
+29,L,D3,Ya,"71,43",Ringan,25,9,9,24,13,10,14,1,1,Make Up Artist,2,Tinggi,Direkomendasikan
+32,L,S2,Tidak,"92,86",Normal,34,9,10,12,22,10,13,0,1,Dokter,5,Tinggi,Direkomendasikan
+24,P,D3,Ya,"78,57",Ringan,30,12,11,23,10,8,5,0,1,Make Up Artist,2,Tinggi,Direkomendasikan
+22,L,S2,Ya,"92,86",Normal,31,11,7,22,14,9,12,0,0,Desainer Grafis,3,Sedang,Direkomendasikan
+34,L,SMA,Ya,100,Normal,31,9,23,12,10,13,10,0,1,Programmer,4,Rendah,Direkomendasikan
+26,P,S1,Ya,"71,43",Ringan,28,12,7,11,23,8,10,1,0,Perawat,4,Sedang,Direkomendasikan
+26,L,D3,Ya,"78,57",Ringan,27,22,9,9,8,10,10,0,1,Pilot,5,Tinggi,Direkomendasikan
+20,L,S2,Tidak,"71,43",Ringan,25,23,11,11,12,11,8,1,0,Pilot,5,Tinggi,Direkomendasikan
+26,L,SMA,Ya,"71,43",Ringan,27,7,22,11,8,12,8,0,0,Programmer,4,Rendah,Direkomendasikan
+27,L,S1,Ya,"92,86",Normal,31,9,7,23,10,9,8,0,1,Desainer Grafis,3,Sedang,Direkomendasikan
+34,P,SMA,Tidak,100,Normal,31,10,12,9,22,10,11,0,1,Perawat,4,Sedang,Direkomendasikan
+24,L,S2,Ya,"21,43",Berat,12,11,10,12,22,9,11,0,1,Dokter,5,Tinggi,Tidak Direkomendasikan
+34,P,SMA,Tidak,100,Normal,30,10,25,13,10,8,10,0,0,Data Analyst,4,Rendah,Direkomendasikan
+33,L,D3,Tidak,"57,14",Sedang,22,10,9,22,12,8,7,0,1,Desainer Grafis,3,Sedang,Direkomendasikan
+28,P,S2,Ya,"42,86",Sedang,20,12,12,10,22,13,10,0,1,Dokter,5,Tinggi,Kurang Direkomendasikan
+32,L,S1,Ya,0,Berat,18,23,11,7,8,10,11,0,0,Pilot,5,Tinggi,Tidak Direkomendasikan
+19,P,D3,Tidak,"85,71",Ringan,26,8,13,24,14,10,9,1,0,Make Up Artist,2,Tinggi,Direkomendasikan
+24,P,S2,Ya,"92,86",Normal,29,13,9,9,10,13,21,1,0,Akuntan,4,Rendah,Direkomendasikan
+24,P,SMA,Ya,50,Sedang,24,24,10,7,12,11,10,1,0,Polisi,3,Sedang,Direkomendasikan
+21,L,D3,Tidak,"92,86",Normal,33,5,22,9,8,8,8,1,0,Programmer,4,Rendah,Direkomendasikan
+30,L,S1,Tidak,"85,71",Ringan,30,12,10,6,22,11,11,0,1,Dokter,5,Tinggi,Direkomendasikan
+22,L,S1,Tidak,100,Normal,30,8,9,9,24,9,12,1,0,Guru,4,Rendah,Direkomendasikan
+17,P,D3,Ya,"92,86",Normal,30,11,21,9,13,13,12,1,0,Data Analyst,4,Rendah,Direkomendasikan
+25,L,S1,Tidak,"85,71",Ringan,26,11,11,11,22,8,9,1,0,Dokter,5,Tinggi,Direkomendasikan
+26,P,S1,Tidak,100,Normal,31,10,20,6,10,10,8,0,0,Data Analyst,4,Rendah,Direkomendasikan
+35,P,SMA,Tidak,"28,57",Berat,14,12,8,22,11,10,11,0,0,Make Up Artist,2,Tinggi,Tidak Direkomendasikan
+26,L,SMA,Tidak,"85,71",Ringan,27,23,8,10,6,10,12,1,1,Pilot,5,Tinggi,Direkomendasikan
+20,L,SMA,Tidak,50,Sedang,22,7,8,22,11,11,12,0,0,Make Up Artist,2,Tinggi,Kurang Direkomendasikan
+28,P,S2,Ya,"85,71",Ringan,26,22,9,9,10,8,9,1,0,Polisi,3,Sedang,Direkomendasikan
+19,L,S2,Tidak,"92,86",Normal,33,11,22,10,8,13,10,0,0,Programmer,4,Rendah,Direkomendasikan
+18,P,S1,Tidak,"85,71",Ringan,29,12,8,11,21,12,11,1,0,Guru,4,Rendah,Direkomendasikan
+34,P,S1,Tidak,100,Normal,33,10,22,12,12,8,10,0,1,Programmer,4,Rendah,Direkomendasikan
+35,P,S1,Tidak,"35,71",Sedang,23,8,22,10,11,7,8,1,0,Data Analyst,4,Rendah,Direkomendasikan
+17,L,S1,Ya,"92,86",Normal,33,23,10,12,9,9,8,0,1,Pilot,5,Tinggi,Direkomendasikan
+33,L,S2,Tidak,"78,57",Ringan,27,11,22,10,10,9,8,0,0,Programmer,4,Rendah,Direkomendasikan
+26,P,D3,Tidak,"92,86",Normal,30,23,14,7,11,13,11,0,1,Pilot,5,Tinggi,Direkomendasikan
+22,P,S1,Tidak,"92,86",Normal,32,9,11,11,22,7,9,1,0,Dokter,5,Tinggi,Direkomendasikan
+29,L,D3,Ya,"85,71",Ringan,26,10,8,10,8,10,25,1,1,Akuntan,4,Rendah,Direkomendasikan
+28,P,S1,Ya,"42,86",Sedang,21,13,11,23,7,9,9,1,0,Desainer Grafis,3,Sedang,Direkomendasikan
+31,P,S2,Tidak,"92,86",Normal,35,10,21,10,10,13,10,0,1,Data Analyst,4,Rendah,Direkomendasikan
+25,L,SMA,Ya,"57,14",Sedang,21,9,7,9,22,12,13,1,1,Dokter,5,Tinggi,Kurang Direkomendasikan
+30,P,D3,Tidak,100,Normal,31,10,23,12,10,8,10,0,0,Data Analyst,4,Rendah,Direkomendasikan
+31,P,S2,Tidak,"92,86",Normal,32,23,7,11,10,9,11,1,1,Pilot,5,Tinggi,Direkomendasikan
+20,L,D3,Tidak,"42,86",Sedang,21,11,8,23,10,10,12,1,0,Make Up Artist,2,Tinggi,Kurang Direkomendasikan
+30,L,S1,Tidak,"92,86",Normal,29,9,12,23,9,8,9,0,0,Desainer Grafis,3,Sedang,Direkomendasikan
+34,L,D3,Ya,"78,57",Ringan,29,25,10,12,11,12,11,1,1,Polisi,3,Sedang,Direkomendasikan
+26,P,D3,Tidak,"42,86",Sedang,21,8,11,23,6,10,10,0,1,Make Up Artist,2,Tinggi,Kurang Direkomendasikan
+31,L,D3,Tidak,"85,71",Ringan,27,11,24,10,5,8,9,1,1,Data Analyst,4,Rendah,Direkomendasikan
+33,P,SMA,Ya,"92,86",Normal,32,10,22,11,10,11,7,0,0,Programmer,4,Rendah,Direkomendasikan
+33,L,SMA,Tidak,"21,43",Berat,12,10,11,8,23,9,11,0,0,Dokter,5,Tinggi,Tidak Direkomendasikan
+31,L,S2,Ya,100,Normal,30,11,22,11,7,10,15,1,1,Programmer,4,Rendah,Direkomendasikan
+18,P,S1,Tidak,100,Normal,32,14,11,12,23,10,12,0,0,Perawat,4,Sedang,Direkomendasikan
+24,L,S1,Tidak,100,Normal,31,11,10,24,10,10,7,1,0,Desainer Grafis,3,Sedang,Direkomendasikan
+27,P,SMA,Ya,"92,86",Normal,32,9,7,10,22,10,11,0,1,Dokter,5,Tinggi,Direkomendasikan
+25,L,D3,Ya,"57,14",Sedang,21,8,8,8,23,9,7,0,1,Dokter,5,Tinggi,Kurang Direkomendasikan
+30,L,D3,Tidak,"71,43",Ringan,28,10,22,10,14,9,10,0,0,Data Analyst,4,Rendah,Direkomendasikan
+19,P,S1,Ya,"92,86",Normal,32,24,13,10,9,10,10,0,0,Polisi,3,Sedang,Direkomendasikan
+29,P,D3,Ya,"92,86",Normal,32,11,14,10,23,11,12,0,0,Dokter,5,Tinggi,Direkomendasikan
+28,P,S2,Tidak,100,Normal,31,11,8,23,13,11,8,0,1,Make Up Artist,2,Tinggi,Direkomendasikan
+32,P,S1,Ya,"92,86",Normal,30,7,11,8,21,12,11,1,1,Perawat,4,Sedang,Direkomendasikan
+22,P,S2,Ya,"92,86",Normal,32,11,12,7,10,12,23,1,0,Akuntan,4,Rendah,Direkomendasikan
+20,P,D3,Ya,100,Normal,33,13,9,22,9,14,5,1,1,Desainer Grafis,3,Sedang,Direkomendasikan
+31,L,SMA,Ya,"92,86",Normal,32,9,10,21,8,12,7,1,1,Desainer Grafis,3,Sedang,Direkomendasikan
+31,P,S1,Ya,"92,86",Normal,31,13,14,13,23,11,8,1,1,Dokter,5,Tinggi,Direkomendasikan
+34,L,D3,Ya,"78,57",Ringan,29,10,24,9,8,8,10,1,1,Programmer,4,Rendah,Direkomendasikan
+28,L,S1,Ya,0,Berat,14,24,9,11,8,10,12,0,0,Polisi,3,Sedang,Kurang Direkomendasikan
+22,P,D3,Tidak,100,Normal,32,10,9,9,21,12,10,0,1,Perawat,4,Sedang,Direkomendasikan
+31,L,S2,Ya,100,Normal,32,10,13,9,23,10,10,0,0,Dokter,5,Tinggi,Direkomendasikan
+22,L,S2,Ya,100,Normal,31,9,9,9,11,10,21,0,1,Akuntan,4,Rendah,Direkomendasikan
+33,L,SMA,Ya,"64,29",Sedang,20,23,12,11,13,9,10,0,0,Polisi,3,Sedang,Direkomendasikan
+25,L,S1,Tidak,"85,71",Ringan,27,12,10,22,12,8,9,1,1,Make Up Artist,2,Tinggi,Direkomendasikan
+29,P,D3,Tidak,"92,86",Normal,32,11,10,13,21,10,12,0,1,Dokter,5,Tinggi,Direkomendasikan
+27,P,S2,Ya,"78,57",Ringan,28,9,8,11,9,10,22,1,1,Akuntan,4,Rendah,Direkomendasikan
+26,P,S1,Ya,100,Normal,32,9,23,12,10,11,12,1,1,Programmer,4,Rendah,Direkomendasikan
+34,P,SMA,Tidak,"64,29",Sedang,21,8,24,9,10,9,13,0,1,Programmer,4,Rendah,Direkomendasikan
+27,L,D3,Ya,"92,86",Normal,33,10,7,9,23,11,9,0,1,Perawat,4,Sedang,Direkomendasikan
+20,L,SMA,Ya,"42,86",Sedang,23,9,8,23,10,11,10,0,0,Make Up Artist,2,Tinggi,Kurang Direkomendasikan
+19,P,S2,Tidak,"92,86",Normal,31,12,15,11,22,10,13,0,1,Guru,4,Rendah,Direkomendasikan
+20,P,SMA,Tidak,"57,14",Sedang,17,11,11,8,25,8,11,0,1,Perawat,4,Sedang,Direkomendasikan
+28,L,S2,Tidak,"71,43",Ringan,30,12,11,13,23,10,11,0,1,Perawat,4,Sedang,Direkomendasikan
+18,P,SMA,Tidak,"64,29",Sedang,20,10,23,8,13,11,9,0,0,Data Analyst,4,Rendah,Direkomendasikan
+24,P,S1,Tidak,"42,86",Sedang,22,10,25,8,10,10,12,0,1,Programmer,4,Rendah,Direkomendasikan
+18,P,D3,Ya,100,Normal,34,9,8,8,24,9,11,0,1,Dokter,5,Tinggi,Direkomendasikan
+35,P,S1,Ya,"42,86",Sedang,19,22,13,11,10,9,11,0,0,Pilot,5,Tinggi,Kurang Direkomendasikan
+21,P,D3,Ya,"92,86",Normal,31,13,9,23,9,10,10,0,0,Make Up Artist,2,Tinggi,Direkomendasikan
+23,P,SMA,Ya,50,Sedang,20,12,8,13,23,8,10,0,1,Guru,4,Rendah,Direkomendasikan
+26,L,S1,Tidak,"64,29",Sedang,20,12,9,23,9,11,7,1,1,Make Up Artist,2,Tinggi,Kurang Direkomendasikan
+23,L,S1,Tidak,"92,86",Normal,32,9,10,11,23,10,8,0,0,Guru,4,Rendah,Direkomendasikan
+34,P,S1,Ya,"14,29",Berat,16,23,9,10,15,8,10,1,0,Polisi,3,Sedang,Kurang Direkomendasikan
+34,P,SMA,Tidak,"92,86",Normal,32,21,9,8,9,10,9,1,1,Pilot,5,Tinggi,Direkomendasikan
+24,L,S2,Ya,"42,86",Sedang,22,11,22,11,10,9,8,0,0,Data Analyst,4,Rendah,Direkomendasikan
+34,L,SMA,Tidak,"92,86",Normal,33,14,6,9,9,10,23,0,0,Akuntan,4,Rendah,Direkomendasikan
+32,P,SMA,Ya,100,Normal,31,8,9,23,10,10,11,1,1,Desainer Grafis,3,Sedang,Direkomendasikan
+30,L,S1,Ya,"92,86",Normal,32,10,6,22,10,13,12,1,1,Make Up Artist,2,Tinggi,Direkomendasikan
+33,P,S1,Tidak,"92,86",Normal,31,9,14,13,25,10,10,1,0,Guru,4,Rendah,Direkomendasikan
+29,L,S1,Tidak,"85,71",Ringan,30,11,11,8,23,10,11,0,1,Perawat,4,Sedang,Direkomendasikan
+20,P,D3,Ya,"92,86",Normal,30,11,10,9,21,7,9,0,0,Guru,4,Rendah,Direkomendasikan
+21,P,D3,Ya,"42,86",Sedang,24,15,8,11,11,10,22,1,1,Akuntan,4,Rendah,Direkomendasikan
+34,P,S2,Tidak,100,Normal,32,13,8,9,25,10,9,0,0,Guru,4,Rendah,Direkomendasikan
+34,P,S2,Tidak,"78,57",Ringan,29,10,10,12,21,9,11,1,0,Guru,4,Rendah,Direkomendasikan
+31,L,S2,Tidak,"92,86",Normal,32,12,11,23,12,11,9,0,0,Desainer Grafis,3,Sedang,Direkomendasikan
+24,L,SMA,Ya,"85,71",Ringan,29,12,12,23,11,11,11,1,0,Make Up Artist,2,Tinggi,Direkomendasikan
+34,L,S1,Ya,"92,86",Normal,32,11,11,11,22,12,7,1,1,Dokter,5,Tinggi,Direkomendasikan
+18,P,SMA,Ya,"92,86",Normal,32,25,9,11,13,10,7,0,1,Polisi,3,Sedang,Direkomendasikan
+30,L,SMA,Ya,"78,57",Ringan,30,9,9,9,23,12,9,1,0,Perawat,4,Sedang,Direkomendasikan
+35,P,D3,Tidak,"71,43",Ringan,29,7,12,11,11,8,21,1,1,Akuntan,4,Rendah,Direkomendasikan
+29,P,SMA,Ya,"35,71",Sedang,22,10,6,9,9,10,21,1,0,Akuntan,4,Rendah,Direkomendasikan
+29,L,D3,Tidak,"92,86",Normal,31,13,7,23,11,13,7,1,1,Desainer Grafis,3,Sedang,Direkomendasikan
+31,L,SMA,Tidak,100,Normal,30,9,10,11,23,9,10,1,0,Guru,4,Rendah,Direkomendasikan
+20,L,D3,Tidak,100,Normal,31,21,8,10,9,11,8,0,0,Polisi,3,Sedang,Direkomendasikan
+35,P,S2,Ya,"64,29",Sedang,21,20,6,9,12,10,14,0,1,Polisi,3,Sedang,Direkomendasikan
+26,P,S1,Tidak,"92,86",Normal,34,9,8,22,10,6,8,1,1,Desainer Grafis,3,Sedang,Direkomendasikan
+35,L,D3,Tidak,"42,86",Sedang,20,22,9,10,11,7,13,1,0,Pilot,5,Tinggi,Kurang Direkomendasikan
+34,P,S1,Ya,"92,86",Normal,31,13,8,6,11,11,23,0,1,Akuntan,4,Rendah,Direkomendasikan
+17,P,S1,Ya,0,Berat,14,10,22,10,13,8,10,0,0,Data Analyst,4,Rendah,Kurang Direkomendasikan
+29,L,S1,Tidak,"78,57",Ringan,30,8,23,10,11,12,7,1,1,Programmer,4,Rendah,Direkomendasikan
+28,L,S2,Ya,"28,57",Berat,13,10,12,22,11,5,7,0,0,Desainer Grafis,3,Sedang,Kurang Direkomendasikan
+30,P,S1,Ya,100,Normal,32,8,9,21,10,12,12,0,0,Make Up Artist,2,Tinggi,Direkomendasikan
+30,L,SMA,Ya,"92,86",Normal,30,10,11,9,11,11,21,1,0,Akuntan,4,Rendah,Direkomendasikan
+21,L,S2,Ya,50,Sedang,21,22,12,14,6,7,9,1,1,Polisi,3,Sedang,Direkomendasikan
+27,P,S1,Tidak,100,Normal,28,12,10,9,23,9,12,1,1,Dokter,5,Tinggi,Direkomendasikan
+20,P,S2,Tidak,"42,86",Sedang,21,9,9,23,11,8,11,0,1,Desainer Grafis,3,Sedang,Direkomendasikan
+27,L,SMA,Tidak,50,Sedang,23,10,13,22,10,11,12,0,0,Make Up Artist,2,Tinggi,Kurang Direkomendasikan
+32,L,S2,Tidak,100,Normal,32,11,10,13,24,8,8,1,1,Dokter,5,Tinggi,Direkomendasikan
+34,P,SMA,Ya,50,Sedang,23,6,22,10,7,10,9,0,0,Programmer,4,Rendah,Direkomendasikan
+30,P,SMA,Tidak,"64,29",Sedang,21,9,12,8,23,10,13,0,1,Perawat,4,Sedang,Direkomendasikan
+22,L,S1,Ya,100,Normal,34,10,21,8,11,9,9,1,0,Data Analyst,4,Rendah,Direkomendasikan
+17,L,SMA,Tidak,"92,86",Normal,30,10,8,8,21,9,12,0,0,Perawat,4,Sedang,Direkomendasikan
+32,P,S1,Ya,"57,14",Sedang,22,11,24,8,12,7,9,1,0,Programmer,4,Rendah,Direkomendasikan
+25,P,S1,Ya,"64,29",Sedang,18,6,23,10,11,12,10,0,0,Data Analyst,4,Rendah,Direkomendasikan
+22,P,D3,Tidak,"92,86",Normal,31,11,12,21,10,9,10,0,0,Desainer Grafis,3,Sedang,Direkomendasikan
+21,P,SMA,Tidak,"92,86",Normal,32,7,11,11,23,12,12,0,0,Dokter,5,Tinggi,Direkomendasikan
+35,L,D3,Ya,"78,57",Ringan,29,9,11,11,24,9,10,1,0,Dokter,5,Tinggi,Direkomendasikan
+19,L,SMA,Tidak,"64,29",Sedang,22,10,11,12,22,11,13,1,1,Perawat,4,Sedang,Direkomendasikan
+22,L,D3,Ya,"21,43",Berat,10,8,12,11,21,9,9,1,0,Perawat,4,Sedang,Kurang Direkomendasikan
+20,L,D3,Ya,100,Normal,33,11,11,10,21,8,12,1,0,Perawat,4,Sedang,Direkomendasikan
+30,P,S1,Tidak,"28,57",Berat,17,9,9,7,22,10,7,1,0,Guru,4,Rendah,Kurang Direkomendasikan
+24,P,S1,Tidak,"71,43",Ringan,26,10,8,9,24,10,14,0,1,Guru,4,Rendah,Direkomendasikan
+26,L,SMA,Ya,"14,29",Berat,13,9,25,10,8,11,10,1,1,Programmer,4,Rendah,Kurang Direkomendasikan
+17,L,SMA,Ya,100,Normal,30,8,9,12,11,12,22,0,1,Akuntan,4,Rendah,Direkomendasikan
+24,P,SMA,Ya,"92,86",Normal,31,10,22,8,12,10,7,1,0,Data Analyst,4,Rendah,Direkomendasikan
+26,L,SMA,Tidak,100,Normal,32,9,9,10,23,11,10,1,0,Dokter,5,Tinggi,Direkomendasikan
+18,P,S2,Ya,100,Normal,33,11,10,11,9,7,22,0,1,Akuntan,4,Rendah,Direkomendasikan
+22,L,S2,Tidak,"92,86",Normal,30,8,12,10,10,8,22,0,0,Akuntan,4,Rendah,Direkomendasikan
+17,P,SMA,Ya,100,Normal,30,9,22,11,12,12,10,1,1,Data Analyst,4,Rendah,Direkomendasikan
+24,P,S1,Tidak,"78,57",Ringan,29,12,10,9,22,10,11,0,1,Dokter,5,Tinggi,Direkomendasikan
+20,P,SMA,Tidak,"35,71",Sedang,24,22,13,10,10,8,10,1,0,Polisi,3,Sedang,Direkomendasikan
+32,L,D3,Tidak,100,Normal,33,9,21,12,8,14,9,0,0,Data Analyst,4,Rendah,Direkomendasikan
+19,P,SMA,Ya,100,Normal,32,9,12,7,23,9,9,1,1,Dokter,5,Tinggi,Direkomendasikan
+28,L,SMA,Tidak,100,Normal,32,9,11,7,23,14,7,0,1,Guru,4,Rendah,Direkomendasikan
+24,P,D3,Tidak,"57,14",Sedang,23,10,9,7,22,10,9,0,0,Dokter,5,Tinggi,Kurang Direkomendasikan
+24,P,S2,Tidak,"92,86",Normal,33,12,11,14,21,10,8,0,1,Perawat,4,Sedang,Direkomendasikan
+35,P,D3,Tidak,"71,43",Ringan,26,12,13,8,22,12,10,1,0,Dokter,5,Tinggi,Direkomendasikan
+26,P,SMA,Tidak,0,Berat,16,10,10,12,21,11,8,0,1,Perawat,4,Sedang,Kurang Direkomendasikan
+28,P,S1,Tidak,"35,71",Sedang,23,13,13,12,22,5,10,0,0,Dokter,5,Tinggi,Kurang Direkomendasikan
+17,P,S1,Ya,100,Normal,33,11,12,12,8,10,22,1,1,Akuntan,4,Rendah,Direkomendasikan
+21,L,S1,Ya,"42,86",Sedang,22,11,23,11,11,12,9,0,1,Data Analyst,4,Rendah,Direkomendasikan
+25,P,S2,Ya,0,Berat,13,8,11,11,23,9,11,0,1,Perawat,4,Sedang,Kurang Direkomendasikan
+31,L,S2,Tidak,"92,86",Normal,32,15,22,9,10,10,9,1,0,Data Analyst,4,Rendah,Direkomendasikan
+22,P,D3,Tidak,"92,86",Normal,32,10,21,11,10,10,9,1,0,Programmer,4,Rendah,Direkomendasikan
+19,P,S1,Ya,"85,71",Ringan,28,12,8,10,22,12,10,0,0,Guru,4,Rendah,Direkomendasikan
+24,L,SMA,Ya,"78,57",Ringan,25,9,9,11,22,12,10,1,1,Perawat,4,Sedang,Direkomendasikan
+22,P,S1,Ya,50,Sedang,21,22,11,11,11,8,7,0,0,Pilot,5,Tinggi,Kurang Direkomendasikan
+31,L,SMA,Tidak,100,Normal,33,7,10,10,9,13,23,0,1,Akuntan,4,Rendah,Direkomendasikan
+21,L,S2,Tidak,100,Normal,33,5,10,11,23,9,11,1,1,Dokter,5,Tinggi,Direkomendasikan
+22,P,S2,Ya,100,Normal,31,22,8,11,10,9,10,1,1,Pilot,5,Tinggi,Direkomendasikan
+32,P,S1,Ya,100,Normal,32,10,22,7,11,12,10,0,0,Programmer,4,Rendah,Direkomendasikan
+27,P,S1,Ya,"64,29",Sedang,20,10,22,8,10,9,10,0,0,Programmer,4,Rendah,Direkomendasikan
+23,L,S2,Tidak,"92,86",Normal,32,10,10,11,20,9,6,0,1,Perawat,4,Sedang,Direkomendasikan
+34,P,D3,Ya,"71,43",Ringan,31,11,12,12,21,13,5,1,0,Guru,4,Rendah,Direkomendasikan
+18,P,S2,Ya,"92,86",Normal,33,8,9,10,24,9,9,0,0,Perawat,4,Sedang,Direkomendasikan
+20,L,S1,Ya,"92,86",Normal,31,10,7,23,12,9,12,0,0,Desainer Grafis,3,Sedang,Direkomendasikan
+23,L,S2,Tidak,100,Normal,30,6,11,7,25,12,8,1,0,Perawat,4,Sedang,Direkomendasikan
+32,P,S2,Tidak,"42,86",Sedang,21,23,9,9,9,9,7,1,1,Polisi,3,Sedang,Direkomendasikan
+32,L,D3,Ya,"71,43",Ringan,30,6,9,12,23,10,14,0,1,Dokter,5,Tinggi,Direkomendasikan
+23,P,S2,Ya,"85,71",Ringan,31,8,22,11,10,10,10,0,1,Programmer,4,Rendah,Direkomendasikan
+23,P,S2,Ya,"28,57",Berat,12,11,10,8,24,11,14,1,1,Dokter,5,Tinggi,Tidak Direkomendasikan
+17,P,S2,Tidak,"85,71",Ringan,29,12,22,10,7,9,9,1,0,Data Analyst,4,Rendah,Direkomendasikan
+18,P,S1,Ya,"92,86",Normal,30,23,5,10,10,9,10,1,1,Polisi,3,Sedang,Direkomendasikan
+19,P,S2,Tidak,100,Normal,32,12,21,11,11,14,8,1,1,Programmer,4,Rendah,Direkomendasikan
+34,L,D3,Tidak,"71,43",Ringan,30,12,10,9,23,11,9,1,0,Perawat,4,Sedang,Direkomendasikan
+28,L,SMA,Tidak,100,Normal,34,12,9,9,12,12,23,1,1,Akuntan,4,Rendah,Direkomendasikan
+19,P,S1,Ya,"21,43",Berat,12,10,23,8,10,9,12,0,0,Programmer,4,Rendah,Kurang Direkomendasikan
+18,L,S2,Tidak,0,Berat,12,8,7,11,22,10,8,1,1,Perawat,4,Sedang,Kurang Direkomendasikan
+24,L,S2,Ya,100,Normal,30,10,21,11,12,8,9,1,1,Data Analyst,4,Rendah,Direkomendasikan
+26,L,S1,Tidak,"92,86",Normal,32,23,10,12,11,8,10,1,1,Pilot,5,Tinggi,Direkomendasikan
+25,P,S1,Tidak,50,Sedang,21,24,9,8,9,9,11,0,1,Pilot,5,Tinggi,Kurang Direkomendasikan
+29,L,S1,Ya,"42,86",Sedang,19,23,8,12,8,7,10,1,1,Polisi,3,Sedang,Direkomendasikan
+18,L,D3,Ya,100,Normal,31,11,9,22,10,11,13,0,1,Make Up Artist,2,Tinggi,Direkomendasikan
+25,P,S1,Ya,100,Normal,32,12,7,21,9,9,10,0,0,Make Up Artist,2,Tinggi,Direkomendasikan
+29,L,D3,Ya,"92,86",Normal,32,9,9,11,24,14,12,0,0,Perawat,4,Sedang,Direkomendasikan
+19,P,SMA,Ya,"92,86",Normal,31,11,13,11,23,10,10,1,1,Dokter,5,Tinggi,Direkomendasikan
+27,L,D3,Ya,100,Normal,32,8,10,7,21,11,9,0,0,Dokter,5,Tinggi,Direkomendasikan
+34,P,S2,Tidak,"92,86",Normal,31,14,22,7,11,9,12,1,1,Programmer,4,Rendah,Direkomendasikan
+27,L,SMA,Tidak,100,Normal,34,12,20,9,10,7,13,1,1,Data Analyst,4,Rendah,Direkomendasikan
+34,P,D3,Ya,100,Normal,29,8,24,6,11,12,9,0,0,Programmer,4,Rendah,Direkomendasikan
+32,P,D3,Tidak,"92,86",Normal,30,13,21,9,10,11,12,1,0,Data Analyst,4,Rendah,Direkomendasikan
+35,L,D3,Ya,"92,86",Normal,32,11,22,10,8,9,10,0,0,Data Analyst,4,Rendah,Direkomendasikan
+34,L,D3,Tidak,"64,29",Sedang,21,10,10,9,23,12,11,0,1,Guru,4,Rendah,Direkomendasikan
+26,L,S1,Tidak,"78,57",Ringan,23,7,22,10,10,11,9,0,0,Programmer,4,Rendah,Direkomendasikan
+30,L,S2,Ya,100,Normal,29,10,10,22,13,7,11,0,0,Desainer Grafis,3,Sedang,Direkomendasikan
+19,P,S2,Ya,"92,86",Normal,32,10,10,23,12,8,14,0,1,Make Up Artist,2,Tinggi,Direkomendasikan
+17,P,S1,Tidak,"14,29",Berat,17,23,14,11,7,12,12,1,0,Polisi,3,Sedang,Kurang Direkomendasikan
+31,P,S2,Ya,100,Normal,35,8,9,9,23,10,7,0,0,Dokter,5,Tinggi,Direkomendasikan
+17,L,SMA,Tidak,"92,86",Normal,31,8,8,11,23,15,10,0,1,Dokter,5,Tinggi,Direkomendasikan
+27,L,D3,Tidak,"71,43",Ringan,31,8,23,9,9,12,8,1,0,Data Analyst,4,Rendah,Direkomendasikan
+27,L,D3,Ya,"85,71",Ringan,27,12,8,24,10,11,10,0,1,Make Up Artist,2,Tinggi,Direkomendasikan
+32,L,S2,Tidak,0,Berat,17,25,11,9,13,8,9,0,1,Pilot,5,Tinggi,Tidak Direkomendasikan
+31,P,S1,Ya,0,Berat,14,8,8,23,10,11,9,0,0,Make Up Artist,2,Tinggi,Tidak Direkomendasikan
+27,L,S2,Tidak,"92,86",Normal,31,11,11,11,12,14,22,1,0,Akuntan,4,Rendah,Direkomendasikan
+34,L,S1,Tidak,"64,29",Sedang,19,23,12,12,11,10,8,0,0,Pilot,5,Tinggi,Kurang Direkomendasikan
+28,P,SMA,Ya,"35,71",Sedang,22,22,11,11,11,8,10,1,1,Pilot,5,Tinggi,Kurang Direkomendasikan
+21,L,D3,Ya,"92,86",Normal,31,7,11,11,24,11,11,1,1,Dokter,5,Tinggi,Direkomendasikan
+17,L,SMA,Ya,"64,29",Sedang,21,12,11,10,22,11,11,1,0,Guru,4,Rendah,Direkomendasikan
+33,P,S1,Ya,100,Normal,33,11,10,12,24,9,11,0,1,Perawat,4,Sedang,Direkomendasikan

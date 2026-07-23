@@ -1,0 +1,104 @@
+Kemampuan identifikasi Warna
+a. Seberapa mudah Anda mengidentifikasi warna: Merah
+(Pilih angka yang paling menggambarkan seberapa mudah Anda mengenali atau membedakan warna)
+1 = Sangat Sulit, 2 = Sulit, 3 = Netral, 4 = Mudah, 5 = Sangat Mudah
+
+b. Seberapa mudah Anda mengidentifikasi warna: Hijau
+(Pilih angka yang paling menggambarkan seberapa mudah Anda mengenali atau membedakan warna)
+1 = Sangat Sulit, 2 = Sulit, 3 = Netral, 4 = Mudah, 5 = Sangat Mudah
+
+c. Seberapa mudah Anda mengidentifikasi warna: Biru
+(Pilih angka yang paling menggambarkan seberapa mudah Anda mengenali atau membedakan warna)
+1 = Sangat Sulit, 2 = Sulit, 3 = Netral, 4 = Mudah, 5 = Sangat Mudah
+
+d. Seberapa mudah Anda mengidentifikasi warna: Kuning
+(Pilih angka yang paling menggambarkan seberapa mudah Anda mengenali atau membedakan warna)
+1 = Sangat Sulit, 2 = Sulit, 3 = Netral, 4 = Mudah, 5 = Sangat Mudah
+
+e. Seberapa mudah Anda mengidentifikasi warna: Orange
+(Pilih angka yang paling menggambarkan seberapa mudah Anda mengenali atau membedakan warna)
+1 = Sangat Sulit, 2 = Sulit, 3 = Netral, 4 = Mudah, 5 = Sangat Mudah
+
+f. Seberapa mudah Anda mengidentifikasi warna: Ungu
+(Pilih angka yang paling menggambarkan seberapa mudah Anda mengenali atau membedakan warna)
+1 = Sangat Sulit, 2 = Sulit, 3 = Netral, 4 = Mudah, 5 = Sangat Mudah
+
+g. Seberapa mudah Anda mengidentifikasi warna: Coklat
+(Pilih angka yang paling menggambarkan seberapa mudah Anda mengenali atau membedakan warna)
+1 = Sangat Sulit, 2 = Sulit, 3 = Netral, 4 = Mudah, 5 = Sangat Mudah
+
+
+RIASEC
+Berikan penilaian pada setiap pernyataan menggunakan skala berikut:
+Skor: 1 = Sangat Tidak Sesuai, 2 = Tidak Sesuai, 3 = Netral, 4 = Sesuai, 5 = Sangat Sesuai
+
+Realistic (R)
+Saya senang menggunakan alat atau mesin.	
+Saya menyukai aktivitas lapangan.	
+Saya senang memperbaiki sesuatu.	
+Saya tertarik pada pekerjaan teknis.	
+Saya nyaman bekerja secara praktik.
+
+Investigative (I)
+Saya senang menganalisis data.	
+Saya suka memecahkan masalah.	
+Saya tertarik melakukan penelitian.	
+Saya menikmati berpikir logis.	
+Saya tertarik mempelajari teknologi baru.
+
+Artistic (A)
+Saya senang membuat desain.	
+Saya menyukai kegiatan kreatif.	
+Saya senang membuat ilustrasi atau karya visual.	
+Saya memiliki banyak ide baru.	
+Saya menikmati pekerjaan yang membutuhkan kreativitas.
+
+Social (S)
+Saya senang membantu orang lain.	
+Saya suka bekerja dalam tim.	
+Saya menikmati mengajar atau berbagi ilmu.	
+Saya mudah berkomunikasi.	
+Saya suka melayani masyarakat.
+
+Enterprising (E)
+Saya senang memimpin kelompok.	
+Saya suka bernegosiasi.	
+Saya percaya diri berbicara di depan umum.	
+Saya tertarik pada dunia bisnis.	
+Saya senang mengambil keputusan.
+
+Conventional (C)
+Saya senang bekerja secara teratur.	
+Saya teliti mengolah data.	
+Saya menyukai pekerjaan administrasi.	
+Saya terbiasa mengikuti prosedur.	
+Saya senang mengelola dokumen atau arsip.
+
+
+Bidang karier mana yang paling Anda minati? (Pilih maksimal 2)
+[Kesehatan] Kedokteran
+[Kesehatan] Keperawatan
+[Kesehatan] Farmasi
+[Kesehatan] Laboratorium
+[Teknik] Teknik Mesin
+[Teknik] Teknik Elektro
+[Teknik] Teknik Sipil
+[Teknik] Teknik Industri
+[Teknologi Informasi] Informatika / Ilmu Komputer
+[Teknologi Informasi] Data Science / Kecerdasan Buatan
+[Seni & Kreatif] Desain Grafis
+[Seni & Kreatif] Multimedia / Film
+[Seni & Kreatif] Seni Rupa
+[Sosial & Humaniora] Pendidikan / Mengajar
+[Sosial & Humaniora] Psikologi
+[Sosial & Humaniora] Hukum
+[Bisnis & Administrasi] Bisnis / Manajemen
+[Bisnis & Administrasi] Akuntansi
+[Bisnis & Administrasi] Administrasi
+[Keselamatan & Transportasi] Penerbangan
+[Keselamatan & Transportasi] Kelautan
+[Keselamatan & Transportasi] Transportasi / Logistik
+[Keselamatan & Transportasi] Kepolisian
+[Keselamatan & Transportasi] TNI / Militer
+[Keselamatan & Transportasi] Pemadam Kebakaran
+Other:
