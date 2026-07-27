@@ -180,10 +180,13 @@ def predict(feature_dict: dict) -> dict:
 
     prediction = str(raw_prediction)
 
-    # Decode label jika label encoder untuk target tersimpan di encoders.pkl
-    if isinstance(_encoders, dict) and "Label" in _encoders:
+    # Decode label menggunakan target encoder dari encoders.pkl
+    target_encoder = None
+    if isinstance(_encoders, dict):
+        target_encoder = _encoders.get("target_encoder") or _encoders.get("Label")
+    if target_encoder is not None:
         try:
-            prediction = str(_encoders["Label"].inverse_transform([int(raw_prediction)])[0])
+            prediction = str(target_encoder.inverse_transform([int(raw_prediction)])[0])
         except Exception:
             pass
 
@@ -193,9 +196,9 @@ def predict(feature_dict: dict) -> dict:
 
     if isinstance(_model, xgb.Booster):
         classes = ["Tidak Direkomendasikan", "Kurang Direkomendasikan", "Direkomendasikan"][:len(proba_array)]
-        if isinstance(_encoders, dict) and "Label" in _encoders:
+        if target_encoder is not None:
             try:
-                classes = [str(c) for c in _encoders["Label"].classes_]
+                classes = [str(c) for c in target_encoder.classes_]
             except Exception:
                 pass
         probabilities = {cls: round(float(p) * 100, 2) for cls, p in zip(classes, proba_array)}
@@ -204,7 +207,9 @@ def predict(feature_dict: dict) -> dict:
         try:
             proba_array = _model.predict_proba(df_encoded)[0]
 
-            if hasattr(_model, "classes_"):
+            if target_encoder is not None:
+                classes = [str(c) for c in target_encoder.classes_]
+            elif hasattr(_model, "classes_"):
                 classes = [str(c) for c in _model.classes_]
             else:
                 classes = [f"Kelas {i}" for i in range(len(proba_array))]
@@ -242,8 +247,9 @@ def _encode_features(df: pd.DataFrame) -> pd.DataFrame:
     df_out = df.copy()
 
     if isinstance(_encoders, dict):
-        # Format: {'JK': LabelEncoder, 'Pendidikan': LabelEncoder, ...}
-        for col, encoder in _encoders.items():
+        # Format notebook: {'label_encoders': {'JK': LE, ...}, 'target_encoder': LE}
+        label_encoders = _encoders.get('label_encoders', _encoders)
+        for col, encoder in label_encoders.items():
             if col in df_out.columns:
                 try:
                     df_out[col] = encoder.transform(df_out[col].astype(str))
@@ -252,7 +258,6 @@ def _encode_features(df: pd.DataFrame) -> pd.DataFrame:
                         f"Nilai tidak dikenal di kolom '{col}': {df_out[col].values}. "
                         f"Menggunakan kelas pertama sebagai fallback. Error: {e}"
                     )
-                    # Fallback: gunakan kelas pertama jika nilai tidak dikenal
                     known_classes = list(encoder.classes_)
                     df_out[col] = df_out[col].apply(
                         lambda v: v if v in known_classes else known_classes[0]
