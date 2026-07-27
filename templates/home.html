@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block title %}Beranda{% endblock %}
+
+{% block content %}
+
+<!-- ══════════════════════════════════════════ HERO SECTION ══ -->
+<section class="hero-section" id="hero">
+  <!-- Animated background blobs -->
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
+
+  <div class="container hero-content">
+    <div class="row align-items-center min-vh-80 py-5">
+      <div class="col-lg-6 text-center text-lg-start">
+        <!-- Badge -->
+        <div class="hero-badge mb-4 animate-fade-in">
+          <i class="bi bi-stars me-2"></i>AI-Powered Screening
+        </div>
+
+        <h1 class="hero-title animate-slide-up">
+          Kenali <span class="text-gradient">Kondisi Penglihatanmu</span>
+          &amp; Temukan Karier Terbaik
+        </h1>
+
+        <p class="hero-subtitle animate-slide-up delay-1">
+          Tes buta warna Ishihara digital + rekomendasi karier berbasis
+          kecerdasan buatan. Dapatkan hasil analisis lengkap dalam hitungan menit.
+        </p>
+
+        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start animate-slide-up delay-2">
+          <a href="{{ url_for('screening.form') }}"
+             class="btn btn-primary-custom btn-lg px-5 py-3">
+            <i class="bi bi-play-circle-fill me-2"></i>Mulai Skrining Gratis
+          </a>
+          <a href="#cara-kerja" class="btn btn-outline-custom btn-lg px-4 py-3">
+            <i class="bi bi-info-circle me-2"></i>Pelajari Lebih Lanjut
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="hero-stats mt-5 animate-fade-in delay-3">
+          <div class="stat-item">
+            <span class="stat-number">11</span>
+            <span class="stat-label">Gambar Ishihara</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">24+</span>
+            <span class="stat-label">Pilihan Karier</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">XGBoost</span>
+            <span class="stat-label">AI Model</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual -->
+      <div class="col-lg-6 d-flex justify-content-center mt-5 mt-lg-0 animate-float">
+        <div class="hero-visual">
+          <div class="eye-ring ring-1"></div>
+          <div class="eye-ring ring-2"></div>
+          <div class="eye-ring ring-3"></div>
+          <div class="eye-center">
+            <i class="bi bi-eye-fill eye-icon"></i>
+          </div>
+          <!-- Floating cards -->
+          <div class="float-card card-1">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>Normal
+          </div>
+          <div class="float-card card-2">
+            <i class="bi bi-briefcase-fill text-primary me-2"></i>Karier Match
+          </div>
+          <div class="float-card card-3">
+            <i class="bi bi-bar-chart-fill text-warning me-2"></i>91% Akurasi
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ CARA KERJA ══ -->
+<section class="section-padded" id="cara-kerja">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <span class="section-badge">Cara Kerja</span>
+      <h2 class="section-title mt-3">Bagaimana IshiharaScreen Bekerja?</h2>
+      <p class="section-subtitle">Proses skrining sederhana dalam 3 tahap utama</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon-wrap bg-gradient-blue">
+            <i class="bi bi-person-fill-check"></i>
+          </div>
+          <div class="step-badge">01</div>
+          <h3 class="feature-title">Data Diri &amp; Kuesioner</h3>
+          <p class="feature-desc">
+            Isi data pribadi, riwayat kesehatan mata, dan jawab pertanyaan
+            kemampuan identifikasi warna serta minat RIASEC Anda.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card animate-on-scroll delay-1">
+          <div class="feature-icon-wrap bg-gradient-purple">
+            <i class="bi bi-eye-fill"></i>
+          </div>
+          <div class="step-badge">02</div>
+          <h3 class="feature-title">Tes Ishihara Digital</h3>
+          <p class="feature-desc">
+            Lihat 11 gambar plat warna Ishihara dan masukkan angka yang Anda
+            lihat. Skor dihitung otomatis untuk menentukan tingkat buta warna.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card animate-on-scroll delay-2">
+          <div class="feature-icon-wrap bg-gradient-green">
+            <i class="bi bi-cpu-fill"></i>
+          </div>
+          <div class="step-badge">03</div>
+          <h3 class="feature-title">Analisis AI &amp; Rekomendasi</h3>
+          <p class="feature-desc">
+            Model XGBoost menganalisis seluruh data Anda dan memberikan
+            rekomendasi apakah karier pilihan sesuai dengan kondisi penglihatan.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ TES ISHIHARA ══ -->
+<section class="section-padded section-alt" id="ishihara-info">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <span class="section-badge">Tes Ishihara</span>
+        <h2 class="section-title mt-3">Apa Itu Tes Ishihara?</h2>
+        <p class="text-secondary mb-4">
+          Tes Ishihara adalah metode skrining buta warna yang dikembangkan oleh
+          Dr. Shinobu Ishihara pada tahun 1917. Tes ini menggunakan gambar
+          pseudo-isochromatic plates yang berisi pola titik-titik warna.
+        </p>
+        <div class="info-list">
+          <div class="info-item">
+            <div class="info-icon"><i class="bi bi-circle-fill text-primary"></i></div>
+            <div>
+              <strong>Akurat &amp; Tervalidasi</strong>
+              <p class="mb-0 text-secondary small">Digunakan secara medis di seluruh dunia selama 100+ tahun</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon"><i class="bi bi-circle-fill text-success"></i></div>
+            <div>
+              <strong>Non-invasif</strong>
+              <p class="mb-0 text-secondary small">Tidak memerlukan alat khusus, cukup layar digital</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon"><i class="bi bi-circle-fill text-warning"></i></div>
+            <div>
+              <strong>Hasil Instan</strong>
+              <p class="mb-0 text-secondary small">Skor dan tingkat keparahan dihitung otomatis</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="ishihara-showcase">
+          <div class="ishihara-plate-demo">
+            <!-- Simulasi plate Ishihara menggunakan CSS dots -->
+            <div class="plate-dots"></div>
+            <div class="plate-number">12</div>
+          </div>
+          <div class="ishihara-legend">
+            <div class="legend-item">
+              <span class="legend-dot normal"></span>Normal Vision
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot dalton"></span>Color Deficiency
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ KARIER ══ -->
+<section class="section-padded" id="karier-info">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <span class="section-badge">Rekomendasi Karier</span>
+      <h2 class="section-title mt-3">Mengapa Kondisi Penglihatan Penting untuk Karier?</h2>
+      <p class="section-subtitle">
+        Beberapa profesi memiliki persyaratan penglihatan warna yang ketat
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <!-- High Color Req -->
+      <div class="col-md-4">
+        <div class="career-card career-high">
+          <div class="career-req-badge">Persyaratan Tinggi</div>
+          <i class="bi bi-airplane-fill career-icon"></i>
+          <h4>Pilot, Dokter, TNI/Polri</h4>
+          <p class="text-secondary small">
+            Profesi ini memerlukan kemampuan membedakan warna dengan sempurna
+            untuk keselamatan dan akurasi kerja.
+          </p>
+        </div>
+      </div>
+
+      <!-- Medium Color Req -->
+      <div class="col-md-4">
+        <div class="career-card career-medium">
+          <div class="career-req-badge">Persyaratan Sedang</div>
+          <i class="bi bi-palette-fill career-icon"></i>
+          <h4>Desainer, Perawat, Teknisi</h4>
+          <p class="text-secondary small">
+            Memerlukan penglihatan warna yang cukup baik, namun masih dapat
+            ditoleransi dengan defisiensi ringan.
+          </p>
+        </div>
+      </div>
+
+      <!-- Low Color Req -->
+      <div class="col-md-4">
+        <div class="career-card career-low">
+          <div class="career-req-badge">Persyaratan Rendah</div>
+          <i class="bi bi-laptop-fill career-icon"></i>
+          <h4>Programmer, Akuntan, Guru</h4>
+          <p class="text-secondary small">
+            Profesi dengan tuntutan warna rendah, sangat cocok bagi individu
+            dengan defisiensi warna berbagai tingkat.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ CTA ══ -->
+<section class="cta-section">
+  <div class="container text-center">
+    <div class="cta-content">
+      <h2 class="cta-title">Siap Mulai Skrining Sekarang?</h2>
+      <p class="cta-subtitle">
+        Proses hanya membutuhkan ±10 menit. Dapatkan laporan lengkap secara gratis.
+      </p>
+      <a href="{{ url_for('screening.form') }}"
+         class="btn btn-primary-custom btn-lg px-5 py-3 mt-3">
+        <i class="bi bi-play-circle-fill me-2"></i>Mulai Skrining Sekarang
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Animate elements on scroll
+(function () {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll(".animate-on-scroll").forEach(el => observer.observe(el));
+})();
+</script>
+{% endblock %}

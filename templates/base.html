@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Aplikasi skrining buta warna dan rekomendasi karier berbasis Tes Ishihara dan Machine Learning XGBoost." />
+  <title>{% block title %}IshiharaScreen{% endblock %} | IshiharaScreen</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Chart.js -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════ NAVBAR ══ -->
+<nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('main.home') }}">
+      <div class="brand-icon">
+        <i class="bi bi-eye-fill"></i>
+      </div>
+      <span class="brand-text">Ishihara<span class="brand-accent">Screen</span></span>
+    </a>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'main.home' %}active{% endif %}"
+             href="{{ url_for('main.home') }}">
+            <i class="bi bi-house me-1"></i>Beranda
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'screening.form' %}active{% endif %}"
+             href="{{ url_for('screening.form') }}">
+            <i class="bi bi-clipboard-check me-1"></i>Mulai Skrining
+          </a>
+        </li>
+        <!-- Dark Mode Toggle -->
+        <li class="nav-item ms-2">
+          <button class="btn btn-theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode"
+                  aria-label="Toggle tema">
+            <i class="bi bi-moon-fill" id="themeIcon"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- ════════════════════════════════════════════════════ END NAVBAR ══ -->
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="container mt-3" id="flash-container">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
+          {% if category == 'success' %}<i class="bi bi-check-circle-fill me-2"></i>
+          {% elif category == 'danger' %}<i class="bi bi-exclamation-circle-fill me-2"></i>
+          {% elif category == 'warning' %}<i class="bi bi-exclamation-triangle-fill me-2"></i>
+          {% else %}<i class="bi bi-info-circle-fill me-2"></i>{% endif %}
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- Page Content -->
+<main id="main-content">
+  {% block content %}{% endblock %}
+</main>
+
+<!-- ══════════════════════════════════════════════════════════ FOOTER ══ -->
+<footer class="footer mt-5">
+  <div class="container">
+    <div class="row gy-4 align-items-center">
+      <div class="col-md-4">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <div class="brand-icon brand-icon-sm">
+            <i class="bi bi-eye-fill"></i>
+          </div>
+          <span class="fw-bold">IshiharaScreen</span>
+        </div>
+        <p class="text-muted small mb-0">
+          Skrining buta warna & rekomendasi karier berbasis Machine Learning.
+        </p>
+      </div>
+      <div class="col-md-4 text-md-center">
+        <p class="text-muted small mb-1">
+          <i class="bi bi-cpu me-1"></i>Didukung oleh <strong>XGBoost</strong> &amp; <strong>Flask</strong>
+        </p>
+        <p class="text-muted small mb-0">
+          <i class="bi bi-eye me-1"></i>Menggunakan <strong>Tes Ishihara</strong>
+        </p>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <p class="text-muted small mb-0">
+          &copy; {{ 2024 }} IshiharaScreen. Dibuat untuk keperluan akademik.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- ═══════════════════════════════════════════════════ END FOOTER ══ -->
+
+<!-- Scroll to Top -->
+<button class="scroll-top-btn" id="scrollTopBtn" title="Kembali ke atas"
+        aria-label="Scroll ke atas">
+  <i class="bi bi-chevron-up"></i>
+</button>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+<script>
+// ── Dark / Light Mode ──────────────────────────────────────────────────────────
+(function () {
+  const html      = document.documentElement;
+  const toggleBtn = document.getElementById("themeToggle");
+  const icon      = document.getElementById("themeIcon");
+  const STORAGE_KEY = "ishihara-theme";
+
+  function applyTheme(theme) {
+    html.setAttribute("data-theme", theme);
+    if (icon) {
+      icon.className = theme === "dark" ? "bi bi-sun-fill" : "bi bi-moon-fill";
+    }
+    localStorage.setItem(STORAGE_KEY, theme);
+  }
+
+  // Load saved theme
+  const saved = localStorage.getItem(STORAGE_KEY) || "light";
+  applyTheme(saved);
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      const current = html.getAttribute("data-theme") || "light";
+      applyTheme(current === "dark" ? "light" : "dark");
+    });
+  }
+})();
+
+// ── Scroll-to-Top ──────────────────────────────────────────────────────────────
+(function () {
+  const btn = document.getElementById("scrollTopBtn");
+  if (!btn) return;
+
+  window.addEventListener("scroll", () => {
+    btn.classList.toggle("show", window.scrollY > 300);
+  });
+
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+})();
+
+// ── Auto-dismiss flash messages ────────────────────────────────────────────────
+setTimeout(() => {
+  document.querySelectorAll("#flash-container .alert").forEach(el => {
+    const bsAlert = bootstrap.Alert.getOrCreateInstance(el);
+    bsAlert.close();
+  });
+}, 5000);
+</script>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

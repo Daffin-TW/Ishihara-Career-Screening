@@ -1,0 +1,353 @@
+{% extends "base.html" %}
+{% block title %}Hasil Skrining{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('main.home') }}">Beranda</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('screening.form') }}">Form Skrining</a></li>
+      <li class="breadcrumb-item active">Hasil</li>
+    </ol>
+  </nav>
+
+  <!-- ── Page Header ─────────────────────────────────────────────────── -->
+  <div class="result-header text-center mb-5">
+    <div class="result-avatar mb-3">
+      <i class="bi bi-clipboard2-pulse-fill"></i>
+    </div>
+    <h1 class="result-title">Hasil Skrining</h1>
+    <p class="text-muted">
+      Atas nama:
+      <strong>{{ summary.nama }}</strong> &bull;
+      {{ summary.usia }} tahun &bull; {{ summary.jk }}
+    </p>
+    <div class="result-decoration"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       BAGIAN 1 & 4: STATUS SKRINING + REKOMENDASI  (hero cards)
+  ══════════════════════════════════════════════════════════════════ -->
+  <div class="row g-4 mb-4">
+
+    <!-- Card 1: Status Skrining -->
+    <div class="col-md-6">
+      <div class="result-card result-card-primary animate-slide-up">
+        <div class="result-card-label">
+          <i class="bi bi-activity me-2"></i>Status Buta Warna
+        </div>
+        <div class="severity-badge severity-{{ severity_class }}">
+          {% if ishihara_result.severity == 'Normal' %}
+            <i class="bi bi-check-circle-fill"></i>
+          {% elif ishihara_result.severity == 'Ringan' %}
+            <i class="bi bi-info-circle-fill"></i>
+          {% elif ishihara_result.severity == 'Sedang' %}
+            <i class="bi bi-exclamation-circle-fill"></i>
+          {% else %}
+            <i class="bi bi-x-circle-fill"></i>
+          {% endif %}
+          {{ ishihara_result.severity }}
+        </div>
+        <p class="result-card-desc">
+          {% if ishihara_result.severity == 'Normal' %}
+            Penglihatan warna Anda berada dalam kondisi <strong>normal</strong>.
+            Tidak terdeteksi defisiensi warna yang signifikan.
+          {% elif ishihara_result.severity == 'Ringan' %}
+            Terdeteksi <strong>defisiensi warna ringan</strong>.
+            Beberapa warna mungkin sulit dibedakan dalam kondisi tertentu.
+          {% elif ishihara_result.severity == 'Sedang' %}
+            Terdeteksi <strong>defisiensi warna sedang</strong>.
+            Diperlukan perhatian khusus untuk karier yang membutuhkan penglihatan warna baik.
+          {% else %}
+            Terdeteksi <strong>defisiensi warna berat</strong>.
+            Disarankan berkonsultasi dengan dokter mata.
+          {% endif %}
+        </p>
+      </div>
+    </div>
+
+    <!-- Card 4: Rekomendasi Karier -->
+    <div class="col-md-6">
+      <div class="result-card result-card-{{ badge_class }} animate-slide-up delay-1">
+        <div class="result-card-label">
+          <i class="bi bi-briefcase-fill me-2"></i>Rekomendasi Karier
+        </div>
+        <div class="recommendation-badge recommend-{{ badge_class }}">
+          <span class="recommend-icon">{{ badge_icon }}</span>
+          <span class="recommend-text">{{ prediction.label }}</span>
+        </div>
+        <p class="result-card-desc">
+          Karier: <strong>{{ summary.karier_pilihan }}</strong>
+          {% if badge_class == 'success' %}
+            <br>Pilihan karier ini <strong>sesuai</strong> dengan kondisi penglihatan Anda.
+          {% elif badge_class == 'warning' %}
+            <br>Pilihan karier ini <strong>kurang optimal</strong> mengingat kondisi penglihatan Anda.
+          {% else %}
+            <br>Pilihan karier ini <strong>tidak disarankan</strong> dengan kondisi penglihatan saat ini.
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       BAGIAN 2: PERSENTASE + BAGIAN 5: CONFIDENCE
+  ══════════════════════════════════════════════════════════════════ -->
+  <div class="row g-4 mb-4">
+
+    <!-- Gauge: Persentase Identifikasi Warna -->
+    <div class="col-md-6">
+      <div class="result-card text-center animate-slide-up delay-2">
+        <div class="result-card-label mb-3">
+          <i class="bi bi-percent me-2"></i>Persentase Identifikasi Warna
+        </div>
+        <div class="gauge-container mx-auto">
+          <canvas id="gaugeChart" width="200" height="200"></canvas>
+          <div class="gauge-center-text">
+            <span class="gauge-value" id="gaugeValue">0%</span>
+            <span class="gauge-label">Identifikasi</span>
+          </div>
+        </div>
+        <div class="gauge-stats mt-3">
+          <div class="gauge-stat">
+            <i class="bi bi-check-circle text-success me-1"></i>
+            <span class="fw-bold text-success">{{ ishihara_result.correct }}</span> benar
+          </div>
+          <div class="gauge-stat-divider"></div>
+          <div class="gauge-stat">
+            <i class="bi bi-x-circle text-danger me-1"></i>
+            <span class="fw-bold text-danger">{{ ishihara_result.wrong }}</span> salah
+          </div>
+          <div class="gauge-stat-divider"></div>
+          <div class="gauge-stat">
+            <i class="bi bi-images text-muted me-1"></i>
+            <span class="fw-bold">{{ ishihara_result.total }}</span> total
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confidence Score -->
+    <div class="col-md-6">
+      <div class="result-card animate-slide-up delay-3">
+        <div class="result-card-label mb-3">
+          <i class="bi bi-speedometer2 me-2"></i>Confidence Score Model
+        </div>
+
+        <div class="confidence-display text-center mb-4">
+          <div class="confidence-circle" id="confidenceCircle">
+            <svg viewBox="0 0 120 120" class="confidence-svg">
+              <circle cx="60" cy="60" r="50" class="conf-bg" />
+              <circle cx="60" cy="60" r="50" class="conf-fill"
+                      id="confCircleFill"
+                      stroke-dasharray="314"
+                      stroke-dashoffset="314" />
+            </svg>
+            <div class="confidence-value" id="confValue">0%</div>
+          </div>
+        </div>
+
+        {% if prediction.probabilities %}
+        <div class="prob-breakdown">
+          <h6 class="fw-semibold mb-3">Distribusi Probabilitas</h6>
+          {% for label, prob in prediction.probabilities.items() %}
+          <div class="prob-item mb-2">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="small text-muted">{{ label }}</span>
+              <span class="small fw-bold">{{ "%.1f"|format(prob) }}%</span>
+            </div>
+            <div class="progress" style="height:6px; border-radius:99px;">
+              <div class="progress-bar
+                {% if 'Tidak' in label %}bg-danger
+                {% elif 'Kurang' in label %}bg-warning
+                {% else %}bg-success{% endif %}"
+                style="width: {{ prob }}%; border-radius:99px;"
+                data-width="{{ prob }}"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       BAGIAN 6: RINGKASAN JAWABAN
+  ══════════════════════════════════════════════════════════════════ -->
+  <div class="result-card mb-4 animate-slide-up delay-4">
+    <div class="result-card-label mb-4">
+      <i class="bi bi-list-check me-2"></i>Ringkasan Jawaban
+    </div>
+
+    <div class="accordion" id="summaryAccordion">
+
+      <!-- Ishihara Detail -->
+      <div class="accordion-item border-0 mb-3">
+        <h2 class="accordion-header">
+          <button class="accordion-button accordion-custom collapsed" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#acc-ishihara">
+            <i class="bi bi-eye-fill me-2 text-primary"></i>
+            Detail Tes Ishihara
+            <span class="ms-auto badge bg-primary-soft text-primary me-3">
+              {{ ishihara_result.correct }}/{{ ishihara_result.total }}
+            </span>
+          </button>
+        </h2>
+        <div id="acc-ishihara" class="accordion-collapse collapse"
+             data-bs-parent="#summaryAccordion">
+          <div class="accordion-body">
+            <div class="ishihara-result-grid">
+              {% for item in summary.ishihara_detail %}
+              <div class="ish-result-item {% if item.is_correct %}correct{% else %}wrong{% endif %}">
+                <div class="ish-no">No. {{ item.no }}</div>
+                <div class="ish-answer">
+                  <span class="user-ans">{{ item.user_ans }}</span>
+                  {% if not item.is_correct %}
+                  <span class="correct-ans">→ {{ item.correct }}</span>
+                  {% endif %}
+                </div>
+                <i class="bi {% if item.is_correct %}bi-check-circle-fill text-success{% else %}bi-x-circle-fill text-danger{% endif %}"></i>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kemampuan Warna -->
+      <div class="accordion-item border-0 mb-3">
+        <h2 class="accordion-header">
+          <button class="accordion-button accordion-custom collapsed" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#acc-color">
+            <i class="bi bi-palette-fill me-2 text-success"></i>
+            Kemampuan Identifikasi Warna
+          </button>
+        </h2>
+        <div id="acc-color" class="accordion-collapse collapse"
+             data-bs-parent="#summaryAccordion">
+          <div class="accordion-body">
+            <div class="color-result-list">
+              {% for item in summary.color_detail %}
+              <div class="color-result-item">
+                <div class="color-dot-label">{{ item.warna }}</div>
+                <div class="color-scale-bar">
+                  <div class="scale-fill"
+                       style="width: {{ item.skor * 20 }}%;
+                              background: {{ ['#e74c3c','#e67e22','#f39c12','#2ecc71','#27ae60'][item.skor-1] }}">
+                  </div>
+                </div>
+                <span class="color-scale-label">{{ item.label }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIASEC Detail -->
+      <div class="accordion-item border-0 mb-3">
+        <h2 class="accordion-header">
+          <button class="accordion-button accordion-custom collapsed" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#acc-riasec">
+            <i class="bi bi-bar-chart-fill me-2 text-warning"></i>
+            Profil RIASEC
+          </button>
+        </h2>
+        <div id="acc-riasec" class="accordion-collapse collapse"
+             data-bs-parent="#summaryAccordion">
+          <div class="accordion-body">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <canvas id="radarChart" width="300" height="300"></canvas>
+              </div>
+              <div class="col-md-6">
+                {% set riasec_colors = {
+                  'R': '#e74c3c', 'I': '#2980b9', 'A': '#8e44ad',
+                  'S': '#27ae60', 'E': '#f39c12', 'C': '#16a085'
+                } %}
+                {% set riasec_names = {
+                  'R': 'Realistic', 'I': 'Investigative', 'A': 'Artistic',
+                  'S': 'Social', 'E': 'Enterprising', 'C': 'Conventional'
+                } %}
+                {% for dim, score in summary.riasec.items() %}
+                <div class="riasec-result-item">
+                  <div class="d-flex justify-content-between mb-1">
+                    <span style="color: {{ riasec_colors[dim] }}" class="fw-semibold">
+                      {{ dim }} – {{ riasec_names[dim] }}
+                    </span>
+                    <span class="fw-bold">{{ score }}/25</span>
+                  </div>
+                  <div class="progress mb-2" style="height:8px; border-radius:99px;">
+                    <div class="progress-bar"
+                         style="width: {{ (score/25)*100 }}%;
+                                background: {{ riasec_colors[dim] }};
+                                border-radius:99px;"></div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fitur Model -->
+      <div class="accordion-item border-0">
+        <h2 class="accordion-header">
+          <button class="accordion-button accordion-custom collapsed" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#acc-features">
+            <i class="bi bi-cpu-fill me-2 text-secondary"></i>
+            Fitur yang Dikirim ke Model
+          </button>
+        </h2>
+        <div id="acc-features" class="accordion-collapse collapse"
+             data-bs-parent="#summaryAccordion">
+          <div class="accordion-body">
+            <div class="row g-2">
+              {% for key, val in feature_dict.items() %}
+              <div class="col-sm-6 col-md-4">
+                <div class="feature-tag">
+                  <span class="feature-key">{{ key }}</span>
+                  <span class="feature-val">{{ val }}</span>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Action Buttons ──────────────────────────────────────────────── -->
+  <div class="text-center py-4">
+    <a href="{{ url_for('screening.form') }}" class="btn btn-outline-custom btn-lg me-3">
+      <i class="bi bi-arrow-counterclockwise me-2"></i>Ulangi Skrining
+    </a>
+    <a href="{{ url_for('main.home') }}" class="btn btn-primary-custom btn-lg">
+      <i class="bi bi-house-fill me-2"></i>Kembali ke Beranda
+    </a>
+  </div>
+
+</div>
+
+<!-- Data untuk JS -->
+<script>
+  const RESULT_DATA = {
+    ishiharaPercentage : {{ ishihara_result.percentage }},
+    confidence         : {{ prediction.confidence }},
+    probabilities      : {{ prediction.probabilities | tojson }},
+    riasec             : {{ summary.riasec | tojson }},
+    severity           : "{{ ishihara_result.severity }}",
+    label              : "{{ prediction.label }}",
+  };
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/result.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,650 @@
+{% extends "base.html" %}
+{% block title %}Form Skrining{% endblock %}
+{# Gunakan enumerate dari Jinja2 globals yang sudah didaftarkan di app.py #}
+
+{% block content %}
+<div class="container py-4" id="screening-container">
+
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('main.home') }}">Beranda</a></li>
+      <li class="breadcrumb-item active">Form Skrining</li>
+    </ol>
+  </nav>
+
+  {% if not model_loaded %}
+  <div class="alert alert-danger shadow-sm">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    <strong>Peringatan:</strong> Model ML tidak dapat dimuat. Pastikan file
+    <code>model_production.pkl</code>, <code>encoders.pkl</code>, dan
+    <code>feature_list.json</code> tersedia di folder <code>src/model/</code>.
+  </div>
+  {% endif %}
+
+  <!-- ── Wizard Progress Bar ─────────────────────────────────────────── -->
+  <div class="wizard-progress mb-4">
+    <div class="wizard-steps" id="wizardSteps">
+      {% set steps = [
+        ("1", "bi-person-fill",        "Data Diri"),
+        ("2", "bi-eye-fill",           "Tes Ishihara"),
+        ("3", "bi-palette-fill",       "Identifikasi Warna"),
+        ("4", "bi-bar-chart-fill",     "RIASEC"),
+        ("5", "bi-briefcase-fill",     "Pilihan Karier"),
+        ("6", "bi-clipboard2-check",   "Review & Submit"),
+      ] %}
+      {% for no, icon, label in steps %}
+      <div class="wizard-step {% if loop.first %}active{% endif %}" data-step="{{ no }}">
+        <div class="step-circle">
+          <i class="bi {{ icon }}"></i>
+          <span class="step-number">{{ no }}</span>
+        </div>
+        <span class="step-label">{{ label }}</span>
+      </div>
+      {% if not loop.last %}<div class="wizard-connector"></div>{% endif %}
+      {% endfor %}
+    </div>
+    <div class="wizard-progress-bar mt-3">
+      <div class="wizard-progress-fill" id="progressFill" style="width: 16.67%"></div>
+    </div>
+    <p class="text-center text-muted small mt-2" id="progressText">Langkah 1 dari 6</p>
+  </div>
+
+  <!-- ── Main Form ──────────────────────────────────────────────────── -->
+  <form id="screeningForm" method="POST" action="{{ url_for('screening.predict_route') }}"
+        novalidate>
+
+    <!-- Simpan data Ishihara hidden -->
+    <input type="hidden" name="ishihara_data" id="ishiharaDataHidden" value="{{ ishihara_json }}" />
+
+    <!-- ══════════════════════════ STEP 1: DATA DIRI ══════════════════════ -->
+    <div class="wizard-pane active" id="step-1">
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon bg-gradient-blue">
+            <i class="bi bi-person-fill"></i>
+          </div>
+          <div>
+            <h2 class="form-card-title">Data Diri</h2>
+            <p class="form-card-subtitle">Lengkapi informasi pribadi Anda</p>
+          </div>
+        </div>
+
+        <div class="row g-4 mt-2">
+          <!-- Nama -->
+          <div class="col-md-6">
+            <label for="nama" class="form-label fw-semibold">
+              Nama Lengkap <span class="text-danger">*</span>
+            </label>
+            <div class="input-group-custom">
+              <i class="bi bi-person-fill input-icon"></i>
+              <input type="text" class="form-control form-control-custom" id="nama" name="nama"
+                     placeholder="Masukkan nama lengkap" required minlength="2" />
+            </div>
+            <div class="invalid-feedback">Nama tidak boleh kosong (min 2 karakter).</div>
+          </div>
+
+          <!-- Usia -->
+          <div class="col-md-6">
+            <label for="usia" class="form-label fw-semibold">
+              Usia <span class="text-danger">*</span>
+              <span class="tooltip-trigger" data-bs-toggle="tooltip"
+                    title="Masukkan usia dalam tahun (15–80)">
+                <i class="bi bi-question-circle text-muted ms-1"></i>
+              </span>
+            </label>
+            <div class="input-group-custom">
+              <i class="bi bi-calendar-fill input-icon"></i>
+              <input type="number" class="form-control form-control-custom" id="usia" name="usia"
+                     placeholder="Contoh: 22" required min="15" max="80" />
+            </div>
+            <div class="invalid-feedback">Usia harus antara 15 hingga 80 tahun.</div>
+          </div>
+
+          <!-- Jenis Kelamin -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">
+              Jenis Kelamin <span class="text-danger">*</span>
+            </label>
+            <div class="d-flex gap-3">
+              {% for val, label in jk_opts %}
+              <label class="radio-card flex-fill" for="jk_{{ val }}">
+                <input type="radio" name="jk" id="jk_{{ val }}" value="{{ val }}"
+                       class="radio-card-input" {% if val == 'L' %}checked{% endif %} required />
+                <div class="radio-card-body">
+                  <i class="bi {% if val == 'L' %}bi-gender-male{% else %}bi-gender-female{% endif %} me-2"></i>
+                  {{ label }}
+                </div>
+              </label>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Pendidikan -->
+          <div class="col-md-6">
+            <label for="pendidikan" class="form-label fw-semibold">
+              Pendidikan Terakhir <span class="text-danger">*</span>
+            </label>
+            <select class="form-select form-control-custom" id="pendidikan" name="pendidikan" required>
+              <option value="" disabled selected>Pilih pendidikan...</option>
+              {% for p in pendidikan_opts %}
+              <option value="{{ p }}">{{ p }}</option>
+              {% endfor %}
+            </select>
+            <div class="invalid-feedback">Pilih pendidikan terakhir Anda.</div>
+          </div>
+
+          <!-- Riwayat Keluarga -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">
+              Riwayat Buta Warna dalam Keluarga
+              <span class="tooltip-trigger" data-bs-toggle="tooltip"
+                    title="Apakah ada anggota keluarga yang mengalami buta warna?">
+                <i class="bi bi-question-circle text-muted ms-1"></i>
+              </span>
+            </label>
+            <div class="d-flex gap-3">
+              <label class="radio-card flex-fill" for="riwayat_ya">
+                <input type="radio" name="riwayat_keluarga" id="riwayat_ya" value="Ya"
+                       class="radio-card-input" required />
+                <div class="radio-card-body"><i class="bi bi-check-circle me-2"></i>Ya</div>
+              </label>
+              <label class="radio-card flex-fill" for="riwayat_tidak">
+                <input type="radio" name="riwayat_keluarga" id="riwayat_tidak" value="Tidak"
+                       class="radio-card-input" checked required />
+                <div class="radio-card-body"><i class="bi bi-x-circle me-2"></i>Tidak</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Alat Bantu Penglihatan -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Menggunakan Alat Bantu Penglihatan?</label>
+            <div class="d-flex gap-3">
+              <label class="radio-card flex-fill" for="alat_ya">
+                <input type="radio" name="alat_bantu" id="alat_ya" value="1" class="radio-card-input" />
+                <div class="radio-card-body"><i class="bi bi-eyeglasses me-2"></i>Ya</div>
+              </label>
+              <label class="radio-card flex-fill" for="alat_tidak">
+                <input type="radio" name="alat_bantu" id="alat_tidak" value="0"
+                       class="radio-card-input" checked />
+                <div class="radio-card-body"><i class="bi bi-x-circle me-2"></i>Tidak</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Penyakit Mata Lain -->
+          <div class="col-12">
+            <label class="form-label fw-semibold">
+              Memiliki Penyakit Mata Lain?
+              <span class="tooltip-trigger" data-bs-toggle="tooltip"
+                    title="Selain buta warna, misal: glaukoma, katarak, rabun jauh/dekat, dll.">
+                <i class="bi bi-question-circle text-muted ms-1"></i>
+              </span>
+            </label>
+            <div class="d-flex gap-3">
+              <label class="radio-card" for="penyakit_ya">
+                <input type="radio" name="penyakit_mata" id="penyakit_ya" value="1" class="radio-card-input" />
+                <div class="radio-card-body"><i class="bi bi-check-circle me-2"></i>Ya</div>
+              </label>
+              <label class="radio-card" for="penyakit_tidak">
+                <input type="radio" name="penyakit_mata" id="penyakit_tidak" value="0"
+                       class="radio-card-input" checked />
+                <div class="radio-card-body"><i class="bi bi-x-circle me-2"></i>Tidak</div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /STEP 1 -->
+
+    <!-- ══════════════════════════ STEP 2: ISHIHARA ════════════════════════ -->
+    <div class="wizard-pane" id="step-2">
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon bg-gradient-purple">
+            <i class="bi bi-eye-fill"></i>
+          </div>
+          <div>
+            <h2 class="form-card-title">Tes Ishihara</h2>
+            <p class="form-card-subtitle">
+              Lihat gambar dan ketik angka yang Anda lihat di dalamnya
+            </p>
+          </div>
+        </div>
+
+        <!-- Ishihara Progress Bar -->
+        <div class="ishihara-nav-bar mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="fw-semibold">Gambar <span id="ishCurrentNo">1</span>
+              dari {{ ishihara_images|length }}</span>
+            <span class="badge bg-primary-soft text-primary" id="ishScore">0 Benar</span>
+          </div>
+          <div class="progress" style="height:8px; border-radius:99px;">
+            <div class="progress-bar progress-bar-animated bg-gradient-blue"
+                 id="ishProgressBar" style="width: 0%; border-radius:99px;"></div>
+          </div>
+        </div>
+
+        <!-- Gambar Ishihara (satu per satu) -->
+        {% for img in ishihara_images %}
+        <div class="ishihara-slide {% if loop.first %}active{% endif %}"
+             id="ish-slide-{{ img.no }}" data-no="{{ img.no }}">
+          <div class="row align-items-center g-4">
+            <div class="col-md-7 text-center">
+              <div class="ishihara-img-wrap">
+                <img src="{{ url_for('screening.ishihara_image', filename=img.filename) }}"
+                     alt="Gambar Ishihara No. {{ img.no }}"
+                     class="ishihara-img" loading="lazy" />
+                <div class="img-overlay-badge">No. {{ img.no }}</div>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="ishihara-input-card">
+                <h5 class="fw-bold mb-1">Gambar {{ img.no }}</h5>
+                <p class="text-muted small mb-3">
+                  Angka apa yang Anda lihat di dalam gambar ini?
+                  Jika tidak melihat angka, ketik <strong>0</strong>.
+                </p>
+                <label class="form-label fw-semibold" for="ishihara_{{ img.no }}">
+                  Jawaban Anda <span class="text-danger">*</span>
+                </label>
+                <div class="input-group-custom">
+                  <i class="bi bi-123 input-icon"></i>
+                  <input type="number" class="form-control form-control-custom ishihara-answer"
+                         id="ishihara_{{ img.no }}" name="ishihara_{{ img.no }}"
+                         placeholder="Ketik angka..." min="0" max="999"
+                         data-no="{{ img.no }}" required />
+                </div>
+                <div class="invalid-feedback">Harap masukkan angka (ketik 0 jika tidak terlihat).</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation per slide Ishihara -->
+          <div class="d-flex justify-content-between mt-4">
+            {% if not loop.first %}
+            <button type="button" class="btn btn-outline-secondary btn-rounded"
+                    onclick="prevIshihara({{ img.no }})">
+              <i class="bi bi-arrow-left me-2"></i>Sebelumnya
+            </button>
+            {% else %}
+            <div></div>
+            {% endif %}
+
+            {% if not loop.last %}
+            <button type="button" class="btn btn-primary-custom btn-rounded"
+                    onclick="nextIshihara({{ img.no }})">
+              Selanjutnya<i class="bi bi-arrow-right ms-2"></i>
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-success-custom btn-rounded"
+                    onclick="finishIshihara()">
+              <i class="bi bi-check-circle me-2"></i>Selesai Tes Ishihara
+            </button>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div><!-- /STEP 2 -->
+
+    <!-- ══════════════════════════ STEP 3: KEMAMPUAN WARNA ════════════════ -->
+    <div class="wizard-pane" id="step-3">
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon bg-gradient-green">
+            <i class="bi bi-palette-fill"></i>
+          </div>
+          <div>
+            <h2 class="form-card-title">Kemampuan Identifikasi Warna</h2>
+            <p class="form-card-subtitle">
+              Nilai kemudahan Anda mengenali setiap warna (1 = Sangat Sulit, 5 = Sangat Mudah)
+            </p>
+          </div>
+        </div>
+
+        {% set colors = [
+          ("merah",  "Merah",  "bi-circle-fill",  "#e74c3c"),
+          ("hijau",  "Hijau",  "bi-circle-fill",  "#27ae60"),
+          ("biru",   "Biru",   "bi-circle-fill",  "#2980b9"),
+          ("kuning", "Kuning", "bi-circle-fill",  "#f39c12"),
+          ("orange", "Orange", "bi-circle-fill",  "#e67e22"),
+          ("ungu",   "Ungu",   "bi-circle-fill",  "#8e44ad"),
+          ("coklat", "Coklat", "bi-circle-fill",  "#795548"),
+        ] %}
+
+        <div class="color-questions mt-3">
+          {% for key, label, icon, color in colors %}
+          <div class="color-question-row">
+            <div class="color-swatch" style="background: {{ color }};"></div>
+            <div class="color-label">{{ label }}</div>
+            <div class="rating-group flex-fill" id="rating-{{ key }}">
+              {% for i in range(1, 6) %}
+              <label class="rating-btn" for="color_{{ key }}_{{ i }}"
+                     data-tooltip="{{ ['Sangat Sulit','Sulit','Netral','Mudah','Sangat Mudah'][i-1] }}">
+                <input type="radio" name="color_{{ key }}" id="color_{{ key }}_{{ i }}"
+                       value="{{ i }}" class="rating-input"
+                       {% if i == 3 %}checked{% endif %} required />
+                <span class="rating-label">{{ i }}</span>
+              </label>
+              {% endfor %}
+            </div>
+            <div class="rating-label-text" id="label-{{ key }}">Netral</div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="scale-legend mt-4">
+          <span class="text-danger fw-semibold">1 = Sangat Sulit</span>
+          <span class="mx-2 text-muted">|</span>
+          <span class="text-success fw-semibold">5 = Sangat Mudah</span>
+        </div>
+      </div>
+    </div><!-- /STEP 3 -->
+
+    <!-- ══════════════════════════ STEP 4: RIASEC ═════════════════════════ -->
+    <div class="wizard-pane" id="step-4">
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon bg-gradient-orange">
+            <i class="bi bi-bar-chart-fill"></i>
+          </div>
+          <div>
+            <h2 class="form-card-title">Kuesioner RIASEC</h2>
+            <p class="form-card-subtitle">
+              Nilai setiap pernyataan: 1 = Sangat Tidak Sesuai … 5 = Sangat Sesuai
+            </p>
+          </div>
+        </div>
+
+        {% set riasec = [
+          ("R", "Realistic", "bi-tools", "#e74c3c", [
+            "Saya senang menggunakan alat atau mesin.",
+            "Saya menyukai aktivitas lapangan.",
+            "Saya senang memperbaiki sesuatu.",
+            "Saya tertarik pada pekerjaan teknis.",
+            "Saya nyaman bekerja secara praktik.",
+          ]),
+          ("I", "Investigative", "bi-search", "#2980b9", [
+            "Saya senang menganalisis data.",
+            "Saya suka memecahkan masalah.",
+            "Saya tertarik melakukan penelitian.",
+            "Saya menikmati berpikir logis.",
+            "Saya tertarik mempelajari teknologi baru.",
+          ]),
+          ("A", "Artistic", "bi-brush-fill", "#8e44ad", [
+            "Saya senang membuat desain.",
+            "Saya menyukai kegiatan kreatif.",
+            "Saya senang membuat ilustrasi atau karya visual.",
+            "Saya memiliki banyak ide baru.",
+            "Saya menikmati pekerjaan yang membutuhkan kreativitas.",
+          ]),
+          ("S", "Social", "bi-people-fill", "#27ae60", [
+            "Saya senang membantu orang lain.",
+            "Saya suka bekerja dalam tim.",
+            "Saya menikmati mengajar atau berbagi ilmu.",
+            "Saya mudah berkomunikasi.",
+            "Saya suka melayani masyarakat.",
+          ]),
+          ("E", "Enterprising", "bi-lightning-fill", "#f39c12", [
+            "Saya senang memimpin kelompok.",
+            "Saya suka bernegosiasi.",
+            "Saya percaya diri berbicara di depan umum.",
+            "Saya tertarik pada dunia bisnis.",
+            "Saya senang mengambil keputusan.",
+          ]),
+          ("C", "Conventional", "bi-clipboard-fill", "#16a085", [
+            "Saya senang bekerja secara teratur.",
+            "Saya teliti mengolah data.",
+            "Saya menyukai pekerjaan administrasi.",
+            "Saya terbiasa mengikuti prosedur.",
+            "Saya senang mengelola dokumen atau arsip.",
+          ]),
+        ] %}
+
+        {% for dim, name, icon, color, questions in riasec %}
+        <div class="riasec-section mt-4">
+          <div class="riasec-header" style="border-left: 4px solid {{ color }};">
+            <i class="bi {{ icon }} me-2" style="color: {{ color }};"></i>
+            <strong>{{ name }} ({{ dim }})</strong>
+            <span class="riasec-score-badge" id="score-badge-{{ dim }}">Skor: 15</span>
+          </div>
+
+          {% for q in questions %}
+          {% set q_idx = loop.index %}
+          <div class="riasec-question-row">
+            <span class="question-text">{{ q_idx }}. {{ q }}</span>
+            <div class="likert-group">
+              {% for val in range(1, 6) %}
+              <label class="likert-btn" for="riasec_{{ dim }}_{{ q_idx }}_{{ val }}">
+                <input type="radio" name="riasec_{{ dim }}_{{ q_idx }}"
+                       id="riasec_{{ dim }}_{{ q_idx }}_{{ val }}"
+                       value="{{ val }}" class="likert-input riasec-input"
+                       data-dim="{{ dim }}"
+                       {% if val == 3 %}checked{% endif %} required />
+                <span>{{ val }}</span>
+              </label>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endfor %}
+
+        <!-- RIASEC Summary -->
+        <div class="riasec-summary-bar mt-4" id="riasecSummaryBar">
+          <h6 class="fw-semibold mb-3">Ringkasan Skor RIASEC</h6>
+          <div class="riasec-bars">
+            {% for dim, name, icon, color, _ in riasec %}
+            <div class="riasec-bar-item">
+              <span class="riasec-dim-label">{{ dim }}</span>
+              <div class="progress flex-fill" style="height:10px; border-radius:99px;">
+                <div class="progress-bar" id="bar-{{ dim }}"
+                     style="width: 60%; background: {{ color }}; border-radius:99px;"></div>
+              </div>
+              <span class="riasec-dim-score" id="score-{{ dim }}">15</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /STEP 4 -->
+
+    <!-- ══════════════════════════ STEP 5: KARIER ══════════════════════════ -->
+    <div class="wizard-pane" id="step-5">
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon bg-gradient-teal">
+            <i class="bi bi-briefcase-fill"></i>
+          </div>
+          <div>
+            <h2 class="form-card-title">Pilihan Karier</h2>
+            <p class="form-card-subtitle">Pilih bidang karier yang paling Anda minati</p>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <label for="karierSelect" class="form-label fw-semibold">
+            Bidang Karier yang Diminati <span class="text-danger">*</span>
+            <span class="tooltip-trigger" data-bs-toggle="tooltip"
+                  title="Model akan mengevaluasi kesesuaian pilihan Anda dengan kondisi penglihatan">
+              <i class="bi bi-question-circle text-muted ms-1"></i>
+            </span>
+          </label>
+
+          <!-- Searchable Select -->
+          <div class="career-search-wrap">
+            <div class="input-group-custom mb-3">
+              <i class="bi bi-search input-icon"></i>
+              <input type="text" class="form-control form-control-custom"
+                     id="careerSearch" placeholder="Cari karier..." autocomplete="off" />
+            </div>
+
+            <div class="career-grid" id="careerGrid">
+              {% for choice in career_choices %}
+              <label class="career-option" for="career_{{ loop.index }}"
+                     data-career="{{ choice }}">
+                <input type="radio" name="karier" id="career_{{ loop.index }}"
+                       value="{{ choice }}" class="career-radio" required />
+                <div class="career-option-body">
+                  <i class="bi bi-briefcase-fill career-opt-icon"></i>
+                  <span>{{ choice }}</span>
+                </div>
+              </label>
+              {% endfor %}
+            </div>
+
+            <!-- Hidden select for form submission fallback -->
+            <select name="karier" id="karierSelect" class="d-none" required>
+              <option value="">-- Pilih --</option>
+              {% for choice in career_choices %}
+              <option value="{{ choice }}">{{ choice }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div id="careerValidationMsg" class="text-danger small mt-2 d-none">
+            <i class="bi bi-exclamation-circle me-1"></i>Harap pilih satu bidang karier.
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /STEP 5 -->
+
+    <!-- ══════════════════════════ STEP 6: REVIEW ══════════════════════════ -->
+    <div class="wizard-pane" id="step-6">
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon bg-gradient-blue">
+            <i class="bi bi-clipboard2-check-fill"></i>
+          </div>
+          <div>
+            <h2 class="form-card-title">Review &amp; Submit</h2>
+            <p class="form-card-subtitle">Periksa kembali semua jawaban sebelum prediksi</p>
+          </div>
+        </div>
+
+        <div class="row g-4 mt-2">
+          <!-- Data Diri Preview -->
+          <div class="col-md-6">
+            <div class="review-card">
+              <div class="review-card-title">
+                <i class="bi bi-person-fill me-2 text-primary"></i>Data Diri
+              </div>
+              <table class="table table-sm review-table">
+                <tr><td class="text-muted">Nama</td><td id="rv-nama" class="fw-semibold">-</td></tr>
+                <tr><td class="text-muted">Usia</td><td id="rv-usia" class="fw-semibold">-</td></tr>
+                <tr><td class="text-muted">Jenis Kelamin</td><td id="rv-jk" class="fw-semibold">-</td></tr>
+                <tr><td class="text-muted">Pendidikan</td><td id="rv-pendidikan" class="fw-semibold">-</td></tr>
+                <tr><td class="text-muted">Riwayat Keluarga</td><td id="rv-riwayat" class="fw-semibold">-</td></tr>
+                <tr><td class="text-muted">Alat Bantu</td><td id="rv-alat" class="fw-semibold">-</td></tr>
+                <tr><td class="text-muted">Penyakit Mata</td><td id="rv-penyakit" class="fw-semibold">-</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Ishihara Preview -->
+          <div class="col-md-6">
+            <div class="review-card">
+              <div class="review-card-title">
+                <i class="bi bi-eye-fill me-2 text-purple"></i>Tes Ishihara
+              </div>
+              <div id="rv-ishihara-score" class="text-center py-2">
+                <div class="big-score-ring" id="rvIshiharaRing">
+                  <span id="rv-ish-pct">0%</span>
+                </div>
+                <p class="text-muted small mt-2 mb-0" id="rv-ish-detail">- benar dari - gambar</p>
+                <span class="badge mt-2" id="rv-ish-severity">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIASEC Preview -->
+          <div class="col-md-6">
+            <div class="review-card">
+              <div class="review-card-title">
+                <i class="bi bi-bar-chart-fill me-2 text-warning"></i>Skor RIASEC
+              </div>
+              <div class="riasec-mini-bars" id="rv-riasec"></div>
+            </div>
+          </div>
+
+          <!-- Karier Preview -->
+          <div class="col-md-6">
+            <div class="review-card">
+              <div class="review-card-title">
+                <i class="bi bi-briefcase-fill me-2 text-success"></i>Karier Dipilih
+              </div>
+              <div class="text-center py-3">
+                <i class="bi bi-briefcase-fill fs-3 text-success mb-2 d-block"></i>
+                <p class="fw-bold mb-0" id="rv-karier">-</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tombol Submit -->
+        <div class="text-center mt-5">
+          <p class="text-muted small mb-4">
+            <i class="bi bi-info-circle me-1"></i>
+            Dengan menekan tombol di bawah, Anda setuju bahwa data ini akan
+            diproses oleh model AI untuk keperluan skrining.
+          </p>
+          <button type="submit" class="btn btn-primary-custom btn-xl px-5 py-3"
+                  id="submitBtn">
+            <span class="spinner-border spinner-border-sm me-2 d-none" id="submitSpinner"></span>
+            <i class="bi bi-cpu-fill me-2" id="submitIcon"></i>
+            Analisis &amp; Prediksi Sekarang
+          </button>
+        </div>
+
+      </div>
+    </div><!-- /STEP 6 -->
+
+    <!-- ── Tombol Navigasi Bawah ────────────────────────────────────────── -->
+    <div class="wizard-nav d-flex justify-content-between align-items-center mt-4">
+      <button type="button" class="btn btn-outline-secondary btn-rounded"
+              id="prevBtn" onclick="prevStep()" style="display:none!important">
+        <i class="bi bi-arrow-left me-2"></i>Sebelumnya
+      </button>
+      <div></div>
+      <button type="button" class="btn btn-primary-custom btn-rounded"
+              id="nextBtn" onclick="nextStep()">
+        Selanjutnya<i class="bi bi-arrow-right ms-2"></i>
+      </button>
+    </div>
+
+  </form>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-content">
+    <div class="ai-spinner">
+      <div class="spinner-ring"></div>
+      <div class="spinner-ring ring2"></div>
+      <i class="bi bi-cpu-fill spinner-icon"></i>
+    </div>
+    <h4 class="mt-4 fw-bold">Menganalisis Data Anda...</h4>
+    <p class="text-muted">Model XGBoost sedang memproses prediksi</p>
+    <div class="loading-steps">
+      <div class="loading-step active" id="ls-1">✓ Memproses skor Ishihara</div>
+      <div class="loading-step" id="ls-2">◌ Encoding fitur...</div>
+      <div class="loading-step" id="ls-3">◌ Menjalankan model XGBoost...</div>
+      <div class="loading-step" id="ls-4">◌ Menyiapkan hasil...</div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Kirim data Ishihara ke form.js
+  const ISHIHARA_IMAGES = {{ ishihara_json | safe }};
+</script>
+<script src="{{ url_for('static', filename='js/form.js') }}"></script>
+{% endblock %}
