@@ -242,8 +242,10 @@ def _encode_features(df: pd.DataFrame) -> pd.DataFrame:
     df_out = df.copy()
 
     if isinstance(_encoders, dict):
-        # Format: {'JK': LabelEncoder, 'Pendidikan': LabelEncoder, ...}
-        for col, encoder in _encoders.items():
+        # Format notebook: {'label_encoders': {'JK': LE, ...}, 'target_encoder': LE}
+        # Format lama:     {'JK': LE, 'Pendidikan': LE, ...}
+        label_encoders = _encoders.get('label_encoders', _encoders)
+        for col, encoder in label_encoders.items():
             if col in df_out.columns:
                 try:
                     df_out[col] = encoder.transform(df_out[col].astype(str))
@@ -252,7 +254,6 @@ def _encode_features(df: pd.DataFrame) -> pd.DataFrame:
                         f"Nilai tidak dikenal di kolom '{col}': {df_out[col].values}. "
                         f"Menggunakan kelas pertama sebagai fallback. Error: {e}"
                     )
-                    # Fallback: gunakan kelas pertama jika nilai tidak dikenal
                     known_classes = list(encoder.classes_)
                     df_out[col] = df_out[col].apply(
                         lambda v: v if v in known_classes else known_classes[0]
