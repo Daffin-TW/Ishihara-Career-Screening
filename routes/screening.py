@@ -1,6 +1,7 @@
 """
 routes/screening.py – Route untuk form skrining dan hasil prediksi
 """
+import os
 import json
 import logging
 from flask import (
@@ -201,11 +202,19 @@ def result():
 
 @screening_bp.route("/ishihara/<filename>")
 def ishihara_image(filename):
-    """Sajikan gambar Ishihara dari folder src/img/ishihara/."""
-    return send_from_directory(
-        current_app.config["ISHIHARA_DIR"],
-        filename
-    )
+    """Sajikan gambar Ishihara dari folder ishihara."""
+    search_dirs = [
+        current_app.config.get("ISHIHARA_DIR"),
+        os.path.join(current_app.config["BASE_DIR"], "ishihara"),
+        os.path.join(current_app.config["BASE_DIR"], "src", "img", "ishihara"),
+    ]
+    for d in search_dirs:
+        if d and os.path.isdir(d):
+            full_path = os.path.join(d, filename)
+            if os.path.isfile(full_path):
+                return send_from_directory(os.path.abspath(d), filename)
+
+    return ("Gambar tidak ditemukan", 404)
 
 
 # ────────────────────────────────────────────────────────────────────────────────

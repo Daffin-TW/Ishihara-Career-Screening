@@ -92,8 +92,8 @@ def get_ishihara_images(ishihara_dir: str) -> list[dict]:
         if not fname.lower().endswith(".png"):
             continue
 
-        # Ekstrak nomor dan jawaban dari nama file (pola: N-ANSWER.png)
-        match = re.match(r"^(\d+)-(\d+)\.png$", fname)
+        # Ekstrak nomor dan jawaban dari nama file (pola: N-ANSWER.png atau N_ANSWER.png)
+        match = re.match(r"^(\d+)[-_](\d+)\.png$", fname, re.IGNORECASE)
         if match:
             no     = int(match.group(1))
             answer = int(match.group(2))

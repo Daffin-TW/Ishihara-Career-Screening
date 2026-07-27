@@ -16,6 +16,79 @@ _encoders  = None
 _features  = None
 
 
+def _safe_load_pkl(file_path):
+    """
+    Mencoba memuat file .pkl dengan berbagai strategi fallback:
+    1. joblib.load
+    2. pickle.load (rb)
+    3. bz2 / gzip / zipfile + pickle/joblib
+    4. xgboost.XGBClassifier / Booster (jika format native XGBoost)
+    """
+    import pickle
+    import gzip
+    import bz2
+    import zipfile
+
+    # Strategi 1: Standard joblib
+    try:
+        return joblib.load(file_path)
+    except Exception as e1:
+        logger.debug(f"joblib.load gagal untuk {file_path}: {e1}")
+
+    # Strategi 2: Standard pickle
+    try:
+        with open(file_path, "rb") as f:
+            return pickle.load(f)
+    except Exception as e2:
+        logger.debug(f"pickle.load gagal untuk {file_path}: {e2}")
+
+    # Strategi 3: Native XGBoost model (jika disave dengan save_model / JSON / UBJ / binary model)
+    try:
+        import xgboost as xgb
+        # Coba sebagai XGBClassifier
+        model = xgb.XGBClassifier()
+        model.load_model(file_path)
+        return model
+    except Exception as e_xgb1:
+        logger.debug(f"XGBClassifier.load_model gagal: {e_xgb1}")
+
+    try:
+        import xgboost as xgb
+        # Coba sebagai raw Booster
+        booster = xgb.Booster()
+        booster.load_model(file_path)
+        return booster
+    except Exception as e_xgb2:
+        logger.debug(f"Booster.load_model gagal: {e_xgb2}")
+
+    # Strategi 4: bz2 + pickle / joblib
+    try:
+        with bz2.open(file_path, "rb") as f:
+            return pickle.load(f)
+    except Exception:
+        pass
+
+    # Strategi 5: gzip + pickle / joblib
+    try:
+        with gzip.open(file_path, "rb") as f:
+            return pickle.load(f)
+    except Exception:
+        pass
+
+    # Strategi 6: zipfile
+    try:
+        with zipfile.ZipFile(file_path, 'r') as z:
+            first_file = z.namelist()[0]
+            with z.open(first_file) as f:
+                return pickle.load(f)
+    except Exception:
+        pass
+
+    raise ValueError(
+        f"Gagal memuat file pickle '{file_path}'. Format tidak dikenali atau file terkompresi khusus/rusak."
+    )
+
+
 def load_model(app_config):
     """
     Muat model, encoders, dan feature list dari path konfigurasi.
@@ -35,8 +108,8 @@ def load_model(app_config):
         if not os.path.exists(features_path):
             raise FileNotFoundError(f"Feature list tidak ditemukan: {features_path}")
 
-        _model    = joblib.load(model_path)
-        _encoders = joblib.load(encoders_path)
+        _model    = _safe_load_pkl(model_path)
+        _encoders = _safe_load_pkl(encoders_path)
 
         with open(features_path, "r", encoding="utf-8") as f:
             _features = json.load(f)
@@ -91,31 +164,55 @@ def predict(feature_dict: dict) -> dict:
     df_encoded = _encode_features(df)
     logger.debug(f"Input DataFrame setelah encoding:\n{df_encoded.to_string()}")
 
-    # ── 4. Prediksi ───────────────────────────────────────────────────────────
-    raw_prediction = _model.predict(df_encoded)[0]
-    # Konversi ke string (handle numpy types)
+    # ── 3. Prediksi ───────────────────────────────────────────────────────────
+    import xgboost as xgb
+    if isinstance(_model, xgb.Booster):
+        dmatrix = xgb.DMatrix(df_encoded)
+        preds = _model.predict(dmatrix)
+        if preds.ndim > 1:
+            raw_prediction = np.argmax(preds[0])
+            proba_array = preds[0]
+        else:
+            raw_prediction = int(preds[0] > 0.5)
+            proba_array = [1 - preds[0], preds[0]]
+    else:
+        raw_prediction = _model.predict(df_encoded)[0]
+
     prediction = str(raw_prediction)
 
-    # ── 5. Probabilitas (jika tersedia) ──────────────────────────────────────
+    # Decode label jika label encoder untuk target tersimpan di encoders.pkl
+    if isinstance(_encoders, dict) and "Label" in _encoders:
+        try:
+            prediction = str(_encoders["Label"].inverse_transform([int(raw_prediction)])[0])
+        except Exception:
+            pass
+
+    # ── 4. Probabilitas (jika tersedia) ──────────────────────────────────────
     probabilities = {}
     confidence    = 100.0
 
-    if hasattr(_model, "predict_proba"):
+    if isinstance(_model, xgb.Booster):
+        classes = ["Tidak Direkomendasikan", "Kurang Direkomendasikan", "Direkomendasikan"][:len(proba_array)]
+        if isinstance(_encoders, dict) and "Label" in _encoders:
+            try:
+                classes = [str(c) for c in _encoders["Label"].classes_]
+            except Exception:
+                pass
+        probabilities = {cls: round(float(p) * 100, 2) for cls, p in zip(classes, proba_array)}
+        confidence = probabilities.get(prediction, max(probabilities.values()) if probabilities else 100.0)
+    elif hasattr(_model, "predict_proba"):
         try:
             proba_array = _model.predict_proba(df_encoded)[0]
 
-            # Ambil nama kelas
             if hasattr(_model, "classes_"):
                 classes = [str(c) for c in _model.classes_]
             else:
-                # Fallback: buat label generik
                 classes = [f"Kelas {i}" for i in range(len(proba_array))]
 
             probabilities = {
                 cls: round(float(prob) * 100, 2)
                 for cls, prob in zip(classes, proba_array)
             }
-            # Confidence = probabilitas kelas yang diprediksi
             confidence = probabilities.get(prediction, max(probabilities.values()) if probabilities else 100.0)
 
         except Exception as e:
