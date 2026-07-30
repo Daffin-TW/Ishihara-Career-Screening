@@ -179,14 +179,6 @@ def predict(feature_dict: dict) -> dict:
         raw_prediction = _model.predict(df_encoded)[0]
 
     prediction = str(raw_prediction)
-
-    # Decode label jika label encoder untuk target tersimpan di encoders.pkl
-    target_enc = None
-    if isinstance(_encoders, dict):
-        target_enc = _encoders.get("target_encoder") or _encoders.get("Label")
-    if target_enc is not None:
-        try:
-            prediction = str(target_enc.inverse_transform([int(raw_prediction)])[0])
         except Exception:
             pass
 
@@ -196,12 +188,6 @@ def predict(feature_dict: dict) -> dict:
 
     if isinstance(_model, xgb.Booster):
         classes = ["Tidak Direkomendasikan", "Kurang Direkomendasikan", "Direkomendasikan"][:len(proba_array)]
-        target_enc = None
-        if isinstance(_encoders, dict):
-            target_enc = _encoders.get("target_encoder") or _encoders.get("Label")
-        if target_enc is not None:
-            try:
-                classes = [str(c) for c in target_enc.classes_]
             except Exception:
                 pass
         probabilities = {cls: round(float(p) * 100, 2) for cls, p in zip(classes, proba_array)}
@@ -209,12 +195,6 @@ def predict(feature_dict: dict) -> dict:
     elif hasattr(_model, "predict_proba"):
         try:
             proba_array = _model.predict_proba(df_encoded)[0]
-
-            target_enc = None
-            if isinstance(_encoders, dict):
-                target_enc = _encoders.get("target_encoder") or _encoders.get("Label")
-            if target_enc is not None and hasattr(target_enc, "classes_"):
-                classes = [str(c) for c in target_enc.classes_]
             elif hasattr(_model, "classes_"):
                 classes = [str(c) for c in _model.classes_]
             else:
@@ -254,7 +234,6 @@ def _encode_features(df: pd.DataFrame) -> pd.DataFrame:
 
     if isinstance(_encoders, dict):
         # Format notebook: {'label_encoders': {'JK': LE, ...}, 'target_encoder': LE}
-        # Format lama:     {'JK': LE, 'Pendidikan': LE, ...}
         label_encoders = _encoders.get('label_encoders', _encoders)
         for col, encoder in label_encoders.items():
             if col in df_out.columns:
