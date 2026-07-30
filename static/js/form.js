@@ -372,16 +372,16 @@ const SEVERITY_THRESHOLDS = [
 function populateReview() {
   // ── Data Diri ─────────────────────────────────────────────────────────
   setText("rv-nama",       document.getElementById("nama")?.value || "-");
-  setText("rv-usia",       (document.getElementById("usia")?.value || "-") + " tahun");
+  setText("rv-usia",       document.getElementById("usia")?.value || "-");
   const jkVal = document.querySelector('input[name="jk"]:checked')?.value;
-  setText("rv-jk",         jkVal === "L" ? "Laki-laki" : jkVal === "P" ? "Perempuan" : "-");
+  setText("rv-jk",         jkVal || "-");
   setText("rv-pendidikan", document.getElementById("pendidikan")?.value || "-");
   const riwayat = document.querySelector('input[name="riwayat_keluarga"]:checked')?.value || "-";
   setText("rv-riwayat",    riwayat);
-  const alat    = document.querySelector('input[name="alat_bantu"]:checked')?.value;
-  setText("rv-alat",       alat === "1" ? "Ya" : "Tidak");
-  const penyakit = document.querySelector('input[name="penyakit_mata"]:checked')?.value;
-  setText("rv-penyakit",   penyakit === "1" ? "Ya" : "Tidak");
+  const pengKacamata = document.querySelector('input[name="peng_kacamata"]:checked')?.value;
+  setText("rv-peng-kacamata", pengKacamata || "-");
+  const kondisiMata = document.getElementById("kondisi_mata")?.value || "-";
+  setText("rv-kondisi-mata", kondisiMata);
 
   // ── Ishihara Score ────────────────────────────────────────────────────
   const answers = Array.from(document.querySelectorAll(".ishihara-answer"));

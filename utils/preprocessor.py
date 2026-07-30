@@ -15,57 +15,61 @@ logger = logging.getLogger(__name__)
 # Total gambar Ishihara yang tersedia
 TOTAL_ISHIHARA = 11
 
-# Mapping: label pilihan karier (questions.txt) → nama karier di training data
-# Urutan: (display_label, model_career, job_zone, color_req)
+# Mapping: label pilihan karier → (job_zone, color_req_score)
+# ColorReq adalah O*NET Visual Color Discrimination Level score (0–100)
 CAREER_MAPPING = {
     # ── Kesehatan ──────────────────────────────────────────────────────────────
-    "[Kesehatan] Kedokteran"              : ("Dokter",          5, "Tinggi"),
-    "[Kesehatan] Keperawatan"             : ("Perawat",         4, "Sedang"),
-    "[Kesehatan] Farmasi"                 : ("Dokter",          5, "Tinggi"),
-    "[Kesehatan] Laboratorium"            : ("Dokter",          5, "Tinggi"),
+    "[Kesehatan] Kedokteran"              : ("5", 37),
+    "[Kesehatan] Keperawatan"             : ("4", 41),
+    "[Kesehatan] Farmasi"                 : ("5", 41),
+    "[Kesehatan] Laboratorium"            : ("4", 52),
 
     # ── Teknik ─────────────────────────────────────────────────────────────────
-    "[Teknik] Teknik Mesin"               : ("Programmer",      4, "Rendah"),
-    "[Teknik] Teknik Elektro"             : ("Programmer",      4, "Rendah"),
-    "[Teknik] Teknik Sipil"               : ("Programmer",      4, "Rendah"),
-    "[Teknik] Teknik Industri"            : ("Programmer",      4, "Rendah"),
+    "[Teknik] Teknik Mesin"               : ("4", 41),
+    "[Teknik] Teknik Elektro"             : ("4", 43),
+    "[Teknik] Teknik Sipil"               : ("4", 37),
+    "[Teknik] Teknik Industri"            : ("4", 39),
 
     # ── Teknologi Informasi ────────────────────────────────────────────────────
-    "[Teknologi Informasi] Informatika / Ilmu Komputer" : ("Programmer",   4, "Rendah"),
-    "[Teknologi Informasi] Data Science / Kecerdasan Buatan": ("Data Analyst", 4, "Rendah"),
+    "[Teknologi Informasi] Informatika / Ilmu Komputer" : ("4", 29),
+    "[Teknologi Informasi] Data Science / Kecerdasan Buatan": ("4", 16),
 
     # ── Seni & Kreatif ─────────────────────────────────────────────────────────
-    "[Seni & Kreatif] Desain Grafis"      : ("Desainer Grafis", 3, "Sedang"),
-    "[Seni & Kreatif] Multimedia / Film"  : ("Desainer Grafis", 3, "Sedang"),
-    "[Seni & Kreatif] Seni Rupa"          : ("Make Up Artist",  2, "Tinggi"),
+    "[Seni & Kreatif] Desain Grafis"      : ("4", 54),
+    "[Seni & Kreatif] Multimedia / Film"  : ("3", 46),
+    "[Seni & Kreatif] Seni Rupa"          : ("3", 75),
 
     # ── Sosial & Humaniora ─────────────────────────────────────────────────────
-    "[Sosial & Humaniora] Pendidikan / Mengajar" : ("Guru",    4, "Rendah"),
-    "[Sosial & Humaniora] Psikologi"             : ("Guru",    4, "Rendah"),
-    "[Sosial & Humaniora] Hukum"                 : ("Polisi",  3, "Sedang"),
+    "[Sosial & Humaniora] Pendidikan / Mengajar" : ("4", 29),
+    "[Sosial & Humaniora] Psikologi"             : ("5", 29),
+    "[Sosial & Humaniora] Hukum"                 : ("5", 21),
 
     # ── Bisnis & Administrasi ──────────────────────────────────────────────────
-    "[Bisnis & Administrasi] Bisnis / Manajemen" : ("Akuntan", 4, "Rendah"),
-    "[Bisnis & Administrasi] Akuntansi"           : ("Akuntan", 4, "Rendah"),
-    "[Bisnis & Administrasi] Administrasi"        : ("Akuntan", 4, "Rendah"),
+    "[Bisnis & Administrasi] Bisnis / Manajemen" : ("4", 25),
+    "[Bisnis & Administrasi] Akuntansi"           : ("4", 23),
+    "[Bisnis & Administrasi] Administrasi"        : ("3", 21),
 
     # ── Keselamatan & Transportasi ────────────────────────────────────────────
-    "[Keselamatan & Transportasi] Penerbangan"          : ("Pilot",  5, "Tinggi"),
-    "[Keselamatan & Transportasi] Kelautan"             : ("Pilot",  5, "Tinggi"),
-    "[Keselamatan & Transportasi] Transportasi / Logistik": ("Polisi", 3, "Sedang"),
-    "[Keselamatan & Transportasi] Kepolisian"           : ("Polisi", 3, "Sedang"),
-    "[Keselamatan & Transportasi] TNI / Militer"        : ("Polisi", 3, "Sedang"),
-    "[Keselamatan & Transportasi] Pemadam Kebakaran"    : ("Polisi", 3, "Sedang"),
+    "[Keselamatan & Transportasi] Penerbangan"          : ("4", 48),
+    "[Keselamatan & Transportasi] Kelautan"             : ("3", 43),
+    "[Keselamatan & Transportasi] Transportasi / Logistik": ("4", 32),
+    "[Keselamatan & Transportasi] Kepolisian"           : ("3", 41),
+    "[Keselamatan & Transportasi] TNI / Militer"        : ("3", 41),
+    "[Keselamatan & Transportasi] Pemadam Kebakaran"    : ("3", 50),
+
+    # ── Tambahan dari encoder (ada di data training) ─────────────────────────
+    "ilmu komunikasi"     : ("4", 29),
+    "tata boga"           : ("3", 43),
 }
 
 # Daftar pilihan karier untuk dropdown (tampilan)
 CAREER_CHOICES = list(CAREER_MAPPING.keys())
 
 # Pilihan pendidikan
-PENDIDIKAN_CHOICES = ["SMA", "D3", "S1", "S2"]
+PENDIDIKAN_CHOICES = ["SMA / SMK / Sederajat", "Diploma (D1-D4)", "Sarjana (S1)", "Pascasarjana (S2/S3)"]
 
 # Pilihan jenis kelamin
-JK_CHOICES = [("L", "Laki-laki"), ("P", "Perempuan")]
+JK_CHOICES = [("Laki-laki", "Laki-laki"), ("Perempuan", "Perempuan")]
 
 
 # ────────────────────────────────────────────────────────────────────────────────
@@ -234,10 +238,9 @@ def calculate_riasec(riasec_scores: dict) -> dict:
 
 def resolve_career(career_label: str) -> tuple:
     """
-    Konversi label karier (dari questions.txt) ke:
-    - nama karier untuk model (sesuai training data)
-    - JobZone
-    - ColorReq
+    Konversi label karier (dari dropdown) ke:
+    - job_zone (str)
+    - color_req (int) – O*NET Color Discrimination Level
 
     Parameters
     ----------
@@ -245,16 +248,16 @@ def resolve_career(career_label: str) -> tuple:
 
     Returns
     -------
-    tuple: (model_career: str, job_zone: int, color_req: str)
+    tuple: (job_zone: str, color_req: int)
     """
     if career_label in CAREER_MAPPING:
         return CAREER_MAPPING[career_label]
     else:
         logger.warning(
             f"Karier '{career_label}' tidak ditemukan di mapping. "
-            f"Menggunakan default: Programmer."
+            f"Menggunakan default: zone=4, color_req=25"
         )
-        return ("Programmer", 4, "Rendah")
+        return ("4", 25)
 
 
 # ── Internal helper ─────────────────────────────────────────────────────────
@@ -291,7 +294,6 @@ def build_feature_dict(form_data: dict, feature_list: list) -> dict:
     """
     # ── Ishihara Score ────────────────────────────────────────────────────────
     percentage = float(form_data.get("ishihara_percentage", 0))
-    severity   = form_data.get("ishihara_severity", "Normal")
 
     # ── Kemampuan Identifikasi Warna ──────────────────────────────────────────
     color_ability = int(form_data.get("color_ability_total", 21))
@@ -305,25 +307,24 @@ def build_feature_dict(form_data: dict, feature_list: list) -> dict:
     c_score = int(form_data.get("C", 15))
 
     # ── Karier ────────────────────────────────────────────────────────────────
-    career_label                     = form_data.get("karier", "")
-    model_career, job_zone, color_req = resolve_career(career_label)
+    career_label           = form_data.get("karier", "")
+    job_zone, color_req    = resolve_career(career_label)
 
     # ── Data Diri ─────────────────────────────────────────────────────────────
-    usia              = int(form_data.get("usia", 20))
-    jk                = str(form_data.get("jk", "L"))
-    pendidikan        = str(form_data.get("pendidikan", "SMA"))
-    riwayat_keluarga  = str(form_data.get("riwayat_keluarga", "Tidak"))
-    alat_bantu        = int(form_data.get("alat_bantu", 0))
-    penyakit_mata     = int(form_data.get("penyakit_mata", 0))
+    usia             = str(form_data.get("usia", "17-25 tahun"))
+    jk               = str(form_data.get("jk", "Laki-laki"))
+    pendidikan       = str(form_data.get("pendidikan", "SMA / SMK / Sederajat"))
+    riwayat_keluarga = str(form_data.get("riwayat_keluarga", "Tidak"))
+    peng_kacamata    = str(form_data.get("peng_kacamata", "Tidak"))
+    kondisi_mata     = str(form_data.get("kondisi_mata", "Tidak ada"))
 
-    # ── Bangun raw dict sesuai nama kolom training data ───────────────────────
+    # ── Bangun raw dict sesuai nama kolom training data (17 feature) ──────────
     raw = {
         "Usia"                            : usia,
         "JK"                              : jk,
         "Pendidikan"                      : pendidikan,
         "Riwayat_Keluarga"               : riwayat_keluarga,
         "Persentase nilai identifikasi warna": percentage,
-        "Tingkat Keparahan"               : severity,
         "Kemampuan identifikasi Warna"    : color_ability,
         "R"                               : r_score,
         "I"                               : i_score,
@@ -331,11 +332,11 @@ def build_feature_dict(form_data: dict, feature_list: list) -> dict:
         "S"                               : s_score,
         "E"                               : e_score,
         "C"                               : c_score,
-        "Alat_Bantu_Penglihatan"          : alat_bantu,
-        "Penyakit_Mata_Lain"              : penyakit_mata,
-        "Karier"                          : model_career,
+        "Karier"                          : career_label,
         "JobZone"                         : job_zone,
         "ColorReq"                        : color_req,
+        "Peng. Kacamata"                  : peng_kacamata,
+        "Kondisi Mata"                    : kondisi_mata,
     }
 
     # ── Susun ulang sesuai feature_list (PENTING!) ────────────────────────────
@@ -408,11 +409,11 @@ def build_summary(form_data: dict, ishihara_images: list) -> dict:
     return {
         "nama"            : form_data.get("nama", "-"),
         "usia"            : form_data.get("usia", "-"),
-        "jk"              : "Laki-laki" if form_data.get("jk") == "L" else "Perempuan",
+        "jk"              : form_data.get("jk", "Laki-laki"),
         "pendidikan"      : form_data.get("pendidikan", "-"),
         "riwayat_keluarga": form_data.get("riwayat_keluarga", "-"),
-        "alat_bantu"      : "Ya" if int(form_data.get("alat_bantu", 0)) else "Tidak",
-        "penyakit_mata"   : "Ya" if int(form_data.get("penyakit_mata", 0)) else "Tidak",
+        "peng_kacamata"   : form_data.get("peng_kacamata", "Tidak"),
+        "kondisi_mata"    : form_data.get("kondisi_mata", "Tidak ada"),
         "ishihara_detail" : ishihara_detail,
         "color_detail"    : color_detail,
         "riasec"          : {

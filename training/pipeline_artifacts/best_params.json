@@ -1,0 +1,14 @@
+{
+  "n_estimators": 362,
+  "learning_rate": 0.25787637597490454,
+  "max_depth": 3,
+  "min_child_weight": 1,
+  "gamma": 0.10801466621057942,
+  "subsample": 0.7845852069301058,
+  "colsample_bytree": 0.5027685113116263,
+  "reg_alpha": 1.0571739659324384e-08,
+  "reg_lambda": 4.4119865227369334e-05,
+  "objective": "multi:softprob",
+  "eval_metric": "mlogloss",
+  "random_state": 42
+}

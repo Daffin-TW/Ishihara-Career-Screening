@@ -179,14 +179,6 @@ def predict(feature_dict: dict) -> dict:
         raw_prediction = _model.predict(df_encoded)[0]
 
     prediction = str(raw_prediction)
-
-    # Decode label menggunakan target encoder dari encoders.pkl
-    target_encoder = None
-    if isinstance(_encoders, dict):
-        target_encoder = _encoders.get("target_encoder") or _encoders.get("Label")
-    if target_encoder is not None:
-        try:
-            prediction = str(target_encoder.inverse_transform([int(raw_prediction)])[0])
         except Exception:
             pass
 
@@ -196,9 +188,6 @@ def predict(feature_dict: dict) -> dict:
 
     if isinstance(_model, xgb.Booster):
         classes = ["Tidak Direkomendasikan", "Kurang Direkomendasikan", "Direkomendasikan"][:len(proba_array)]
-        if target_encoder is not None:
-            try:
-                classes = [str(c) for c in target_encoder.classes_]
             except Exception:
                 pass
         probabilities = {cls: round(float(p) * 100, 2) for cls, p in zip(classes, proba_array)}
@@ -206,9 +195,6 @@ def predict(feature_dict: dict) -> dict:
     elif hasattr(_model, "predict_proba"):
         try:
             proba_array = _model.predict_proba(df_encoded)[0]
-
-            if target_encoder is not None:
-                classes = [str(c) for c in target_encoder.classes_]
             elif hasattr(_model, "classes_"):
                 classes = [str(c) for c in _model.classes_]
             else:
