@@ -88,17 +88,19 @@
           <div class="col-md-6">
             <label for="usia" class="form-label fw-semibold">
               Usia <span class="text-danger">*</span>
-              <span class="tooltip-trigger" data-bs-toggle="tooltip"
-                    title="Masukkan usia dalam tahun (15–80)">
-                <i class="bi bi-question-circle text-muted ms-1"></i>
-              </span>
             </label>
             <div class="input-group-custom">
               <i class="bi bi-calendar-fill input-icon"></i>
-              <input type="number" class="form-control form-control-custom" id="usia" name="usia"
-                     placeholder="Contoh: 22" required min="15" max="80" />
+              <select class="form-select form-control-custom" id="usia" name="usia" required>
+                <option value="" disabled selected>Pilih rentang usia...</option>
+                <option value="< 17 tahun">&lt; 17 tahun</option>
+                <option value="17-25 tahun">17–25 tahun</option>
+                <option value="26-35 tahun">26–35 tahun</option>
+                <option value="36-45 tahun">36–45 tahun</option>
+                <option value="> 45 tahun">&gt; 45 tahun</option>
+              </select>
             </div>
-            <div class="invalid-feedback">Usia harus antara 15 hingga 80 tahun.</div>
+            <div class="invalid-feedback">Pilih rentang usia Anda.</div>
           </div>
 
           <!-- Jenis Kelamin -->
@@ -110,9 +112,9 @@
               {% for val, label in jk_opts %}
               <label class="radio-card flex-fill" for="jk_{{ val }}">
                 <input type="radio" name="jk" id="jk_{{ val }}" value="{{ val }}"
-                       class="radio-card-input" {% if val == 'L' %}checked{% endif %} required />
+                       class="radio-card-input" {% if val == 'Laki-laki' %}checked{% endif %} required />
                 <div class="radio-card-body">
-                  <i class="bi {% if val == 'L' %}bi-gender-male{% else %}bi-gender-female{% endif %} me-2"></i>
+                  <i class="bi {% if val == 'Laki-laki' %}bi-gender-male{% else %}bi-gender-female{% endif %} me-2"></i>
                   {{ label }}
                 </div>
               </label>
@@ -157,42 +159,38 @@
             </div>
           </div>
 
-          <!-- Alat Bantu Penglihatan -->
+          <!-- Penggunaan Kacamata -->
           <div class="col-md-6">
-            <label class="form-label fw-semibold">Menggunakan Alat Bantu Penglihatan?</label>
+            <label class="form-label fw-semibold">Menggunakan Kacamata / Lensa Kontak?</label>
             <div class="d-flex gap-3">
-              <label class="radio-card flex-fill" for="alat_ya">
-                <input type="radio" name="alat_bantu" id="alat_ya" value="1" class="radio-card-input" />
+              <label class="radio-card flex-fill" for="peng_kacamata_ya">
+                <input type="radio" name="peng_kacamata" id="peng_kacamata_ya" value="Ya" class="radio-card-input" />
                 <div class="radio-card-body"><i class="bi bi-eyeglasses me-2"></i>Ya</div>
               </label>
-              <label class="radio-card flex-fill" for="alat_tidak">
-                <input type="radio" name="alat_bantu" id="alat_tidak" value="0"
+              <label class="radio-card flex-fill" for="peng_kacamata_tidak">
+                <input type="radio" name="peng_kacamata" id="peng_kacamata_tidak" value="Tidak"
                        class="radio-card-input" checked />
                 <div class="radio-card-body"><i class="bi bi-x-circle me-2"></i>Tidak</div>
               </label>
             </div>
           </div>
 
-          <!-- Penyakit Mata Lain -->
+          <!-- Kondisi Mata -->
           <div class="col-12">
-            <label class="form-label fw-semibold">
-              Memiliki Penyakit Mata Lain?
+            <label for="kondisi_mata" class="form-label fw-semibold">
+              Kondisi Mata
               <span class="tooltip-trigger" data-bs-toggle="tooltip"
-                    title="Selain buta warna, misal: glaukoma, katarak, rabun jauh/dekat, dll.">
+                    title="Pilih kondisi mata Anda saat ini, selain buta warna">
                 <i class="bi bi-question-circle text-muted ms-1"></i>
               </span>
             </label>
-            <div class="d-flex gap-3">
-              <label class="radio-card" for="penyakit_ya">
-                <input type="radio" name="penyakit_mata" id="penyakit_ya" value="1" class="radio-card-input" />
-                <div class="radio-card-body"><i class="bi bi-check-circle me-2"></i>Ya</div>
-              </label>
-              <label class="radio-card" for="penyakit_tidak">
-                <input type="radio" name="penyakit_mata" id="penyakit_tidak" value="0"
-                       class="radio-card-input" checked />
-                <div class="radio-card-body"><i class="bi bi-x-circle me-2"></i>Tidak</div>
-              </label>
-            </div>
+            <select class="form-select form-control-custom" id="kondisi_mata" name="kondisi_mata" required>
+              <option value="Tidak ada">Tidak ada</option>
+              <option value="Miopia - rabun jauh (sulit melihat objek yang jauh)">Miopia (Rabun Jauh)</option>
+              <option value="Hipermetropi - rabun dekat (sulit melihat objek yang dekat)">Hipermetropi (Rabun Dekat)</option>
+              <option value="Astigmatisme - silinder (penglihatan buram atau terdistorsi)">Astigmatisme (Silinder)</option>
+              <option value="Miopia - rabun jauh (sulit melihat objek yang jauh), Astigmatisme - silinder (penglihatan buram atau terdistorsi)">Miopia + Silinder</option>
+            </select>
           </div>
         </div>
       </div>
@@ -540,8 +538,8 @@
                 <tr><td class="text-muted">Jenis Kelamin</td><td id="rv-jk" class="fw-semibold">-</td></tr>
                 <tr><td class="text-muted">Pendidikan</td><td id="rv-pendidikan" class="fw-semibold">-</td></tr>
                 <tr><td class="text-muted">Riwayat Keluarga</td><td id="rv-riwayat" class="fw-semibold">-</td></tr>
-                <tr><td class="text-muted">Alat Bantu</td><td id="rv-alat" class="fw-semibold">-</td></tr>
-                <tr><td class="text-muted">Penyakit Mata</td><td id="rv-penyakit" class="fw-semibold">-</td></tr>
+                <tr><td class="text-muted">Kacamata</td><td id="rv-peng-kacamata" class="fw-semibold">-</td></tr>
+                <tr><td class="text-muted">Kondisi Mata</td><td id="rv-kondisi-mata" class="fw-semibold">-</td></tr>
               </table>
             </div>
           </div>

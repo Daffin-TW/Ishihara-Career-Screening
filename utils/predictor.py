@@ -181,9 +181,12 @@ def predict(feature_dict: dict) -> dict:
     prediction = str(raw_prediction)
 
     # Decode label jika label encoder untuk target tersimpan di encoders.pkl
-    if isinstance(_encoders, dict) and "target_encoder" in _encoders:
+    target_enc = None
+    if isinstance(_encoders, dict):
+        target_enc = _encoders.get("target_encoder") or _encoders.get("Label")
+    if target_enc is not None:
         try:
-            prediction = str(_encoders["target_encoder"].inverse_transform([int(raw_prediction)])[0])
+            prediction = str(target_enc.inverse_transform([int(raw_prediction)])[0])
         except Exception:
             pass
 
@@ -192,10 +195,13 @@ def predict(feature_dict: dict) -> dict:
     confidence    = 100.0
 
     if isinstance(_model, xgb.Booster):
-        classes = ["Direkomendasikan", "Kurang Direkomendasikan", "Tidak Direkomendasikan"][:len(proba_array)]
-        if isinstance(_encoders, dict) and "target_encoder" in _encoders:
+        classes = ["Tidak Direkomendasikan", "Kurang Direkomendasikan", "Direkomendasikan"][:len(proba_array)]
+        target_enc = None
+        if isinstance(_encoders, dict):
+            target_enc = _encoders.get("target_encoder") or _encoders.get("Label")
+        if target_enc is not None:
             try:
-                classes = [str(c) for c in _encoders["target_encoder"].classes_]
+                classes = [str(c) for c in target_enc.classes_]
             except Exception:
                 pass
         probabilities = {cls: round(float(p) * 100, 2) for cls, p in zip(classes, proba_array)}
@@ -204,11 +210,11 @@ def predict(feature_dict: dict) -> dict:
         try:
             proba_array = _model.predict_proba(df_encoded)[0]
 
-            if isinstance(_encoders, dict) and "target_encoder" in _encoders:
-                try:
-                    classes = [str(c) for c in _encoders["target_encoder"].classes_]
-                except Exception:
-                    classes = [str(c) for c in _model.classes_] if hasattr(_model, "classes_") else [f"Kelas {i}" for i in range(len(proba_array))]
+            target_enc = None
+            if isinstance(_encoders, dict):
+                target_enc = _encoders.get("target_encoder") or _encoders.get("Label")
+            if target_enc is not None and hasattr(target_enc, "classes_"):
+                classes = [str(c) for c in target_enc.classes_]
             elif hasattr(_model, "classes_"):
                 classes = [str(c) for c in _model.classes_]
             else:

@@ -4,7 +4,6 @@
   "Pendidikan",
   "Riwayat_Keluarga",
   "Persentase nilai identifikasi warna",
-  "Tingkat Keparahan",
   "Kemampuan identifikasi Warna",
   "R",
   "I",
@@ -12,9 +11,9 @@
   "S",
   "E",
   "C",
-  "Alat_Bantu_Penglihatan",
-  "Penyakit_Mata_Lain",
   "Karier",
   "JobZone",
-  "ColorReq"
+  "ColorReq",
+  "Peng. Kacamata",
+  "Kondisi Mata"
 ]
