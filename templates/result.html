@@ -28,153 +28,6 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════════
-       BAGIAN 1 & 4: STATUS SKRINING + REKOMENDASI  (hero cards)
-  ══════════════════════════════════════════════════════════════════ -->
-  <div class="row g-4 mb-4">
-
-    <!-- Card 1: Status Skrining -->
-    <div class="col-md-6">
-      <div class="result-card result-card-primary animate-slide-up">
-        <div class="result-card-label">
-          <i class="bi bi-activity me-2"></i>Status Buta Warna
-        </div>
-        <div class="severity-badge severity-{{ severity_class }}">
-          {% if ishihara_result.severity == 'Normal' %}
-            <i class="bi bi-check-circle-fill"></i>
-          {% elif ishihara_result.severity == 'Ringan' %}
-            <i class="bi bi-info-circle-fill"></i>
-          {% elif ishihara_result.severity == 'Sedang' %}
-            <i class="bi bi-exclamation-circle-fill"></i>
-          {% else %}
-            <i class="bi bi-x-circle-fill"></i>
-          {% endif %}
-          {{ ishihara_result.severity }}
-        </div>
-        <p class="result-card-desc">
-          {% if ishihara_result.severity == 'Normal' %}
-            Penglihatan warna Anda berada dalam kondisi <strong>normal</strong>.
-            Tidak terdeteksi defisiensi warna yang signifikan.
-          {% elif ishihara_result.severity == 'Ringan' %}
-            Terdeteksi <strong>defisiensi warna ringan</strong>.
-            Beberapa warna mungkin sulit dibedakan dalam kondisi tertentu.
-          {% elif ishihara_result.severity == 'Sedang' %}
-            Terdeteksi <strong>defisiensi warna sedang</strong>.
-            Diperlukan perhatian khusus untuk karier yang membutuhkan penglihatan warna baik.
-          {% else %}
-            Terdeteksi <strong>defisiensi warna berat</strong>.
-            Disarankan berkonsultasi dengan dokter mata.
-          {% endif %}
-        </p>
-      </div>
-    </div>
-
-    <!-- Card 4: Rekomendasi Karier -->
-    <div class="col-md-6">
-      <div class="result-card result-card-{{ badge_class }} animate-slide-up delay-1">
-        <div class="result-card-label">
-          <i class="bi bi-briefcase-fill me-2"></i>Rekomendasi Karier
-        </div>
-        <div class="recommendation-badge recommend-{{ badge_class }}">
-          <span class="recommend-icon">{{ badge_icon }}</span>
-          <span class="recommend-text">{{ prediction.label }}</span>
-        </div>
-        <p class="result-card-desc">
-          Karier: <strong>{{ summary.karier_pilihan }}</strong>
-          {% if badge_class == 'success' %}
-            <br>Pilihan karier ini <strong>sesuai</strong> dengan kondisi penglihatan Anda.
-          {% elif badge_class == 'warning' %}
-            <br>Pilihan karier ini <strong>kurang optimal</strong> mengingat kondisi penglihatan Anda.
-          {% else %}
-            <br>Pilihan karier ini <strong>tidak disarankan</strong> dengan kondisi penglihatan saat ini.
-          {% endif %}
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════════════
-       BAGIAN 2: PERSENTASE + BAGIAN 5: CONFIDENCE
-  ══════════════════════════════════════════════════════════════════ -->
-  <div class="row g-4 mb-4">
-
-    <!-- Gauge: Persentase Identifikasi Warna -->
-    <div class="col-md-6">
-      <div class="result-card text-center animate-slide-up delay-2">
-        <div class="result-card-label mb-3">
-          <i class="bi bi-percent me-2"></i>Persentase Identifikasi Warna
-        </div>
-        <div class="gauge-container mx-auto">
-          <canvas id="gaugeChart" width="200" height="200"></canvas>
-          <div class="gauge-center-text">
-            <span class="gauge-value" id="gaugeValue">0%</span>
-            <span class="gauge-label">Identifikasi</span>
-          </div>
-        </div>
-        <div class="gauge-stats mt-3">
-          <div class="gauge-stat">
-            <i class="bi bi-check-circle text-success me-1"></i>
-            <span class="fw-bold text-success">{{ ishihara_result.correct }}</span> benar
-          </div>
-          <div class="gauge-stat-divider"></div>
-          <div class="gauge-stat">
-            <i class="bi bi-x-circle text-danger me-1"></i>
-            <span class="fw-bold text-danger">{{ ishihara_result.wrong }}</span> salah
-          </div>
-          <div class="gauge-stat-divider"></div>
-          <div class="gauge-stat">
-            <i class="bi bi-images text-muted me-1"></i>
-            <span class="fw-bold">{{ ishihara_result.total }}</span> total
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Confidence Score -->
-    <div class="col-md-6">
-      <div class="result-card animate-slide-up delay-3">
-        <div class="result-card-label mb-3">
-          <i class="bi bi-speedometer2 me-2"></i>Confidence Score Model
-        </div>
-
-        <div class="confidence-display text-center mb-4">
-          <div class="confidence-circle" id="confidenceCircle">
-            <svg viewBox="0 0 120 120" class="confidence-svg">
-              <circle cx="60" cy="60" r="50" class="conf-bg" />
-              <circle cx="60" cy="60" r="50" class="conf-fill"
-                      id="confCircleFill"
-                      stroke-dasharray="314"
-                      stroke-dashoffset="314" />
-            </svg>
-            <div class="confidence-value" id="confValue">0%</div>
-          </div>
-        </div>
-
-        {% if prediction.probabilities %}
-        <div class="prob-breakdown">
-          <h6 class="fw-semibold mb-3">Distribusi Probabilitas</h6>
-          {% for label, prob in prediction.probabilities.items() %}
-          <div class="prob-item mb-2">
-            <div class="d-flex justify-content-between mb-1">
-              <span class="small text-muted">{{ label }}</span>
-              <span class="small fw-bold">{{ "%.1f"|format(prob) }}%</span>
-            </div>
-            <div class="progress" style="height:6px; border-radius:99px;">
-              <div class="progress-bar
-                {% if 'Tidak' in label %}bg-danger
-                {% elif 'Kurang' in label %}bg-warning
-                {% else %}bg-success{% endif %}"
-                style="width: {{ prob }}%; border-radius:99px;"
-                data-width="{{ prob }}"></div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════════════
        BAGIAN 6: RINGKASAN JAWABAN
   ══════════════════════════════════════════════════════════════════ -->
   <div class="result-card mb-4 animate-slide-up delay-4">
@@ -294,32 +147,117 @@
         </div>
       </div>
 
-      <!-- Fitur Model -->
-      <div class="accordion-item border-0">
-        <h2 class="accordion-header">
-          <button class="accordion-button accordion-custom collapsed" type="button"
-                  data-bs-toggle="collapse" data-bs-target="#acc-features">
-            <i class="bi bi-cpu-fill me-2 text-secondary"></i>
-            Fitur yang Dikirim ke Model
-          </button>
-        </h2>
-        <div id="acc-features" class="accordion-collapse collapse"
-             data-bs-parent="#summaryAccordion">
-          <div class="accordion-body">
-            <div class="row g-2">
-              {% for key, val in feature_dict.items() %}
-              <div class="col-sm-6 col-md-4">
-                <div class="feature-tag">
-                  <span class="feature-key">{{ key }}</span>
-                  <span class="feature-val">{{ val }}</span>
-                </div>
-              </div>
-              {% endfor %}
-            </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       BAGIAN 2: PERSENTASE + BAGIAN 5: CONFIDENCE
+  ══════════════════════════════════════════════════════════════════ -->
+  <div class="row g-4 mb-4">
+
+    <!-- Gauge: Persentase Identifikasi Warna -->
+    <div class="col-md-6">
+      <div class="result-card text-center animate-slide-up delay-2">
+        <div class="result-card-label mb-3">
+          <i class="bi bi-percent me-2"></i>Persentase Identifikasi Warna
+        </div>
+        <div class="gauge-container mx-auto">
+          <canvas id="gaugeChart" width="200" height="200"></canvas>
+          <div class="gauge-center-text">
+            <span class="gauge-value" id="gaugeValue">0%</span>
+            <span class="gauge-label">Identifikasi</span>
+          </div>
+        </div>
+        <div class="gauge-stats mt-3">
+          <div class="gauge-stat">
+            <i class="bi bi-check-circle text-success me-1"></i>
+            <span class="fw-bold text-success">{{ ishihara_result.correct }}</span> benar
+          </div>
+          <div class="gauge-stat-divider"></div>
+          <div class="gauge-stat">
+            <i class="bi bi-x-circle text-danger me-1"></i>
+            <span class="fw-bold text-danger">{{ ishihara_result.wrong }}</span> salah
+          </div>
+          <div class="gauge-stat-divider"></div>
+          <div class="gauge-stat">
+            <i class="bi bi-images text-muted me-1"></i>
+            <span class="fw-bold">{{ ishihara_result.total }}</span> total
           </div>
         </div>
       </div>
+    </div>
 
+    <!-- Confidence Score -->
+    <div class="col-md-6">
+      <div class="result-card animate-slide-up delay-3">
+        <div class="result-card-label mb-3">
+          <i class="bi bi-speedometer2 me-2"></i>Confidence Score Model
+        </div>
+
+        <div class="confidence-display text-center mb-4">
+          <div class="confidence-circle" id="confidenceCircle">
+            <svg viewBox="0 0 120 120" class="confidence-svg">
+              <circle cx="60" cy="60" r="50" class="conf-bg" />
+              <circle cx="60" cy="60" r="50" class="conf-fill"
+                      id="confCircleFill"
+                      stroke-dasharray="314"
+                      stroke-dashoffset="314" />
+            </svg>
+            <div class="confidence-value" id="confValue">0%</div>
+          </div>
+        </div>
+
+        {% if prediction.probabilities %}
+        <div class="prob-breakdown">
+          <h6 class="fw-semibold mb-3">Distribusi Probabilitas</h6>
+          {% for label, prob in prediction.probabilities.items() %}
+          <div class="prob-item mb-2">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="small text-muted">{{ label }}</span>
+              <span class="small fw-bold">{{ "%.1f"|format(prob) }}%</span>
+            </div>
+            <div class="progress" style="height:6px; border-radius:99px;">
+              <div class="progress-bar
+                {% if 'Tidak' in label %}bg-danger
+                {% elif 'Kurang' in label %}bg-warning
+                {% else %}bg-success{% endif %}"
+                style="width: {{ prob }}%; border-radius:99px;"
+                data-width="{{ prob }}"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       BAGIAN 4: REKOMENDASI KARIER  (hero card)
+  ══════════════════════════════════════════════════════════════════ -->
+  <div class="row g-4 mb-4">
+
+    <!-- Card 4: Rekomendasi Karier -->
+    <div class="col-md-12">
+      <div class="result-card result-card-{{ badge_class }} animate-slide-up delay-1">
+        <div class="result-card-label">
+          <i class="bi bi-briefcase-fill me-2"></i>Rekomendasi Karier
+        </div>
+        <div class="recommendation-badge recommend-{{ badge_class }}">
+          <span class="recommend-icon">{{ badge_icon }}</span>
+          <span class="recommend-text">{{ prediction.label }}</span>
+        </div>
+        <p class="result-card-desc">
+          Karier: <strong>{{ summary.karier_pilihan }}</strong>
+          {% if badge_class == 'success' %}
+            <br>Pilihan karier ini <strong>sesuai</strong> dengan kondisi penglihatan Anda.
+          {% elif badge_class == 'warning' %}
+            <br>Pilihan karier ini <strong>kurang optimal</strong> mengingat kondisi penglihatan Anda.
+          {% else %}
+            <br>Pilihan karier ini <strong>tidak disarankan</strong> dengan kondisi penglihatan saat ini.
+          {% endif %}
+        </p>
+      </div>
     </div>
   </div>
 

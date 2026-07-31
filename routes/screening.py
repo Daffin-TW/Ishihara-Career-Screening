@@ -131,7 +131,6 @@ def predict_route():
         session["prediction"]     = result
         session["ishihara_result"] = ishihara_result
         session["summary"]        = summary
-        session["feature_dict"]   = {k: str(v) for k, v in feature_dict.items()}
 
         flash("Prediksi berhasil dilakukan!", "success")
         return redirect(url_for("screening.result"))
@@ -157,7 +156,6 @@ def result():
     prediction      = session.get("prediction")
     ishihara_result  = session.get("ishihara_result")
     summary         = session.get("summary")
-    feature_dict    = session.get("feature_dict")
 
     if not prediction:
         flash("Belum ada data prediksi. Silakan lakukan skrining terlebih dahulu.", "warning")
@@ -189,7 +187,6 @@ def result():
         prediction      = prediction,
         ishihara_result  = ishihara_result,
         summary         = summary,
-        feature_dict    = feature_dict,
         badge_class     = badge_class,
         badge_icon      = badge_icon,
         severity_class  = severity_class,

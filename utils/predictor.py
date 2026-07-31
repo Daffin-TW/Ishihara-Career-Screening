@@ -148,13 +148,18 @@ def predict(feature_dict: dict) -> dict:
     -------
     dict
         {
-          'label'      : str,   # Label prediksi
+          'label'      : str,   # Label prediksi (label target asli, bukan index kelas)
           'confidence' : float, # Probabilitas kelas terprediksi (0–100)
           'probabilities': dict # Semua probabilitas per kelas
         }
     """
     if not is_model_loaded():
         raise RuntimeError("Model belum dimuat. Hubungi administrator.")
+
+    # Target encoder: untuk mengubah index kelas model kembali ke label target asli
+    target_encoder = None
+    if isinstance(_encoders, dict):
+        target_encoder = _encoders.get("target_encoder")
 
     # ── 1. Bangun DataFrame dengan urutan fitur sesuai feature_list.json ──────
     df = pd.DataFrame([feature_dict], columns=_features)
@@ -166,8 +171,10 @@ def predict(feature_dict: dict) -> dict:
 
     # ── 3. Prediksi ───────────────────────────────────────────────────────────
     import xgboost as xgb
+    proba_array = None
+
     if isinstance(_model, xgb.Booster):
-        dmatrix = xgb.DMatrix(df_encoded)
+        dmatrix = xgb.DMatrix(df_encoded, enable_categorical=True)
         preds = _model.predict(dmatrix)
         if preds.ndim > 1:
             raw_prediction = np.argmax(preds[0])
@@ -179,22 +186,32 @@ def predict(feature_dict: dict) -> dict:
         raw_prediction = _model.predict(df_encoded)[0]
 
     prediction = str(raw_prediction)
-        except Exception:
-            pass
+
+    # ── 3b. Kembalikan index kelas ke label target asli ─────────────────────
+    if target_encoder is not None:
+        try:
+            prediction = str(target_encoder.inverse_transform([int(raw_prediction)])[0])
+        except Exception as e:
+            logger.warning(f"Gagal inverse_transform label prediksi: {e}")
 
     # ── 4. Probabilitas (jika tersedia) ──────────────────────────────────────
     probabilities = {}
     confidence    = 100.0
 
     if isinstance(_model, xgb.Booster):
-        classes = ["Tidak Direkomendasikan", "Kurang Direkomendasikan", "Direkomendasikan"][:len(proba_array)]
-            except Exception:
-                pass
+        if target_encoder is not None:
+            classes = [str(c) for c in target_encoder.classes_][:len(proba_array)]
+        else:
+            classes = [f"Kelas {i}" for i in range(len(proba_array))]
         probabilities = {cls: round(float(p) * 100, 2) for cls, p in zip(classes, proba_array)}
         confidence = probabilities.get(prediction, max(probabilities.values()) if probabilities else 100.0)
+
     elif hasattr(_model, "predict_proba"):
         try:
             proba_array = _model.predict_proba(df_encoded)[0]
+
+            if target_encoder is not None:
+                classes = [str(c) for c in target_encoder.classes_]
             elif hasattr(_model, "classes_"):
                 classes = [str(c) for c in _model.classes_]
             else:
@@ -212,13 +229,19 @@ def predict(feature_dict: dict) -> dict:
             confidence    = 100.0
 
     return {
-        "label"        : str(prediction),
+        "label"        : prediction,
         "confidence"   : confidence,
         "probabilities": probabilities,
     }
 
 
 # ── Internal helper ───────────────────────────────────────────────────────────
+
+def _is_object_like(series: pd.Series) -> bool:
+    """True jika kolom berupa string/object (butuh encoding atau kategori)."""
+    dt = series.dtype
+    return dt == object or isinstance(dt, pd.StringDtype)
+
 
 def _encode_features(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -229,6 +252,10 @@ def _encode_features(df: pd.DataFrame) -> pd.DataFrame:
 
     Jika encoders.pkl adalah LabelEncoder tunggal atau tipe lain,
     fungsi ini akan menangani keduanya.
+
+    Kolom bertipe object/string yang tidak memiliki encoder akan dikonversi
+    ke dtype 'category' agar XGBoost (enable_categorical=True) tetap dapat
+    memprosesnya tanpa error.
     """
     df_out = df.copy()
 
@@ -253,5 +280,22 @@ def _encode_features(df: pd.DataFrame) -> pd.DataFrame:
         logger.warning(
             "encoders.pkl bukan dict. Asumsikan tidak ada encoding yang diperlukan."
         )
+
+    # ── Kolom object/string yang tersisa (tidak ada encoder) → category dtype ──
+    remaining_object = [c for c in df_out.columns if _is_object_like(df_out[c])]
+    for col in remaining_object:
+        logger.warning(
+            f"Kolom '{col}' tidak memiliki encoder; dikonversi ke dtype category."
+        )
+        df_out[col] = df_out[col].astype("category")
+
+    # ── Validasi akhir: log kolom dengan dtype yang tidak didukung XGBoost ────
+    bad = [
+        c for c in df_out.columns
+        if not (pd.api.types.is_numeric_dtype(df_out[c])
+                or pd.api.types.is_categorical_dtype(df_out[c]))
+    ]
+    if bad:
+        logger.warning(f"Kolom dengan dtype tidak didukung setelah encoding: {bad}")
 
     return df_out
