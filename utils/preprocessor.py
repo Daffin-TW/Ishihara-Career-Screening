@@ -60,6 +60,7 @@ CAREER_MAPPING = {
     # ── Tambahan dari encoder (ada di data training) ─────────────────────────
     "ilmu komunikasi"     : ("4", 29),
     "tata boga"           : ("3", 43),
+    "[Seni & Kreatif] Make Up Artist"     : ("3", 63),
 }
 
 # Daftar pilihan karier untuk dropdown (tampilan)
