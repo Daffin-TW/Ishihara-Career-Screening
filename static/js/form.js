@@ -294,13 +294,6 @@ function validateStep(step) {
   if (step === 1) {
     // Data Diri
     valid = validateFields(["nama", "usia", "pendidikan"]);
-    if (valid) {
-      const usia = parseInt(document.getElementById("usia").value);
-      if (isNaN(usia) || usia < 15 || usia > 80) {
-        setInvalid("usia", "Usia harus antara 15 hingga 80 tahun.");
-        valid = false;
-      }
-    }
   }
   else if (step === 2) {
     // Ishihara – cek semua terjawab
