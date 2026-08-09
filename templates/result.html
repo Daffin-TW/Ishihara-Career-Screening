@@ -271,6 +271,42 @@
     </a>
   </div>
 
+  <!-- ══════════════════════════════════════════════════════════════════
+       BAGIAN REKOMENDASI PEKERJAAN ALTERNATIF (Paling Bawah Halaman)
+       Tampil HANYA jika hasil prediksi XGBoost BUKAN 'Direkomendasikan'
+  ══════════════════════════════════════════════════════════════════ -->
+  {% if not is_recommended %}
+  <div class="result-card mt-4 mb-4 animate-slide-up">
+    <div class="result-card-label text-primary mb-2">
+      <i class="bi bi-lightbulb-fill me-2"></i>Rekomendasi Pekerjaan
+    </div>
+    
+    <p class="text-secondary mb-4">
+      Berdasarkan hasil identifikasi warna Anda, beberapa kategori pekerjaan yang memiliki tingkat kesesuaian paling tinggi adalah:
+    </p>
+
+    {% if occupation_recommendations %}
+    <div class="row g-3">
+      {% for item in occupation_recommendations %}
+      <div class="col-md-6 col-lg-4">
+        <div class="recommended-job-card">
+          <div class="job-card-rank">{{ loop.index }}</div>
+          <div class="job-card-content">
+            <i class="bi bi-briefcase-fill me-2 text-primary"></i>
+            <span class="fw-semibold text-primary-dark">{{ item.category }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info border-0 rounded-4 mb-0">
+      <i class="bi bi-info-circle-fill me-2"></i>Tidak terdapat data yang valid untuk rekomendasi kategori pekerjaan saat ini.
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
 </div>
 
 <!-- Data untuk JS -->
