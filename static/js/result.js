@@ -1,6 +1,6 @@
 /**
  * result.js – Animasi chart dan visualisasi untuk halaman hasil
- * IshiharaScreen
+ * ODZ Screening
  */
 
 document.addEventListener("DOMContentLoaded", () => {

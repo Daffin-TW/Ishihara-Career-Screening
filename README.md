@@ -1,6 +1,6 @@
-# 👁️ IshiharaScreen – Skrining Buta Warna & Rekomendasi Karier
+# 👁️ ODZ Screening – Skrining Buta Warna & Rekomendasi Karier
 
-**IshiharaScreen** adalah aplikasi web full-stack berbasis **Flask (Python)** dan **XGBoost Machine Learning** yang dirancang untuk melakukan skrining tingkat buta warna menggunakan **Tes Ishihara** serta memprediksi kesesuaian karier pengguna berdasarkan hasil tes, kemampuan identifikasi warna, dan profil minat **RIASEC**.
+**ODZ Screening** adalah aplikasi web full-stack berbasis **Flask (Python)** dan **XGBoost Machine Learning** yang dirancang untuk melakukan skrining tingkat buta warna menggunakan **Tes Ishihara** serta memprediksi kesesuaian karier pengguna berdasarkan hasil tes, kemampuan identifikasi warna, dan profil minat **RIASEC**.
 
 ---
 
