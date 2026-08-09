@@ -38,11 +38,14 @@ CAREER_MAPPING = {
     "[Seni & Kreatif] Desain Grafis"      : ("4", 54),
     "[Seni & Kreatif] Multimedia / Film"  : ("3", 46),
     "[Seni & Kreatif] Seni Rupa"          : ("3", 75),
+    "[Seni & Kreatif] Make Up Artist"     : ("3", 63),
+    "[Seni & Kreatif] Tata Boga"           : ("3", 43),
 
     # ── Sosial & Humaniora ─────────────────────────────────────────────────────
     "[Sosial & Humaniora] Pendidikan / Mengajar" : ("4", 29),
     "[Sosial & Humaniora] Psikologi"             : ("5", 29),
     "[Sosial & Humaniora] Hukum"                 : ("5", 21),
+    "[Sosial & Humaniora] Ilmu Komunikasi"     : ("4", 29),
 
     # ── Bisnis & Administrasi ──────────────────────────────────────────────────
     "[Bisnis & Administrasi] Bisnis / Manajemen" : ("4", 25),
@@ -56,11 +59,6 @@ CAREER_MAPPING = {
     "[Keselamatan & Transportasi] Kepolisian"           : ("3", 41),
     "[Keselamatan & Transportasi] TNI / Militer"        : ("3", 41),
     "[Keselamatan & Transportasi] Pemadam Kebakaran"    : ("3", 50),
-
-    # ── Tambahan dari encoder (ada di data training) ─────────────────────────
-    "ilmu komunikasi"     : ("4", 29),
-    "tata boga"           : ("3", 43),
-    "[Seni & Kreatif] Make Up Artist"     : ("3", 63),
 }
 
 # Daftar pilihan karier untuk dropdown (tampilan)
