@@ -31,5 +31,9 @@ class Config:
     _root_questions = os.path.join(BASE_DIR, "questions.txt")
     QUESTIONS_PATH = _src_questions if os.path.exists(_src_questions) else _root_questions
 
+    _src_importance = os.path.join(BASE_DIR, "src", "data", "occupation_importance.csv")
+    _root_importance = os.path.join(BASE_DIR, "occupation_importance.csv")
+    OCCUPATION_IMPORTANCE_PATH = _src_importance if os.path.exists(_src_importance) else _root_importance
+
     # ── Upload ───────────────────────────────────────────────────────────────
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB max upload

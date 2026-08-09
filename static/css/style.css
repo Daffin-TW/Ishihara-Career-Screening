@@ -1560,3 +1560,41 @@ a:hover { color: var(--primary-dark); }
 [data-theme="dark"] .badge { --bs-badge-color: inherit; }
 [data-theme="dark"] .progress { background-color: var(--border); }
 [data-theme="dark"] .alert { border: 1px solid var(--border); }
+
+/* ── Recommended Job Cards (Alternative Recommendations) ───────────────── */
+.recommended-job-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  transition: var(--transition);
+  height: 100%;
+}
+.recommended-job-card:hover {
+  border-color: var(--primary);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.job-card-rank {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.job-card-content {
+  display: flex;
+  align-items: center;
+  font-size: 0.92rem;
+}
+

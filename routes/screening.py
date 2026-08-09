@@ -16,6 +16,7 @@ from utils.preprocessor import (
     calculate_riasec,
     build_feature_dict,
     build_summary,
+    get_occupation_recommendations,
     CAREER_CHOICES,
     PENDIDIKAN_CHOICES,
     JK_CHOICES,
@@ -182,14 +183,26 @@ def result():
         "Berat" : "danger",
     }.get(severity, "secondary")
 
+    # Fitur Rekomendasi Pekerjaan berdasarkan Importance (HANYA jika prediksi BUKAN 'Direkomendasikan')
+    label_text = prediction.get("label", "").strip()
+    is_recommended = (label_text == "Direkomendasikan")
+    occupation_recommendations = []
+
+    if not is_recommended:
+        user_pct = ishihara_result.get("percentage", 0.0) if ishihara_result else 0.0
+        importance_path = current_app.config.get("OCCUPATION_IMPORTANCE_PATH")
+        occupation_recommendations = get_occupation_recommendations(user_pct, importance_path, top_n=6)
+
     return render_template(
         "result.html",
-        prediction      = prediction,
-        ishihara_result  = ishihara_result,
-        summary         = summary,
-        badge_class     = badge_class,
-        badge_icon      = badge_icon,
-        severity_class  = severity_class,
+        prediction                  = prediction,
+        ishihara_result              = ishihara_result,
+        summary                     = summary,
+        badge_class                 = badge_class,
+        badge_icon                  = badge_icon,
+        severity_class              = severity_class,
+        is_recommended              = is_recommended,
+        occupation_recommendations  = occupation_recommendations,
     )
 
 
