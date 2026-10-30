@@ -32,6 +32,29 @@ RIASEC_ALIGNED_FIT = 65.0
 # Ambang minimum similarity agar okupasi layak tampil di daftar utama.
 RIASEC_MIN_SIMILARITY = 50.0
 
+_TRANSLATION_MAP = None
+
+
+def get_occupation_translation(name: str) -> str:
+    """Terjemahkan nama okupasi bahasa Inggris ke bahasa Indonesia."""
+    global _TRANSLATION_MAP
+    if _TRANSLATION_MAP is None:
+        path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "src", "data", "occupations_id.json",
+        )
+        if os.path.exists(path):
+            try:
+                import json
+                with open(path, encoding="utf-8") as f:
+                    _TRANSLATION_MAP = json.load(f)
+            except Exception as e:
+                logger.error(f"Gagal membaca occupations_id.json: {e}")
+                _TRANSLATION_MAP = {}
+        else:
+            _TRANSLATION_MAP = {}
+    return _TRANSLATION_MAP.get(name, name)
+
 
 # ── Kemiripan profil ──────────────────────────────────────────────────────────
 
@@ -157,10 +180,14 @@ def load_occupations(riasec_path, importance_path=None, master_path=None) -> lis
         category = (row.get("OccupationCategory") or "").strip() or (
             color.get("OccupationCategory") or ""
         ).strip()
+        # Bersihkan kategori kesehatan yang salah label (bukan kode 29/31)
+        if category.startswith("[Kesehatan]") and not code.startswith(("29", "31")):
+            category = ""
 
         occupations.append({
             "code": code,
             "occupation": name,
+            "occupation_id": get_occupation_translation(name),
             "category": category,
             "scores": {d: scores[d] for d in RIASEC_DIMENSIONS},
             "ih": [d for d in (
@@ -239,6 +266,7 @@ def rank_occupations(
         ranked.append({
             "code": occ["code"],
             "occupation": occ["occupation"],
+            "occupation_id": occ.get("occupation_id", get_occupation_translation(occ["occupation"])),
             "category": occ["category"],
             "job_zone": occ["job_zone"],
             "scores": occ["scores"],

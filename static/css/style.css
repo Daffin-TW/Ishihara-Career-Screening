@@ -1564,7 +1564,7 @@ a:hover { color: var(--primary-dark); }
 /* ── Recommended Job Cards (Alternative Recommendations) ───────────────── */
 .recommended-job-card {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   background: var(--bg-alt);
   border: 1px solid var(--border);
@@ -1591,10 +1591,13 @@ a:hover { color: var(--primary-dark); }
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-top: 2px;
 }
 .job-card-content {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
   font-size: 0.92rem;
 }
 

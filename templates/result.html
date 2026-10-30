@@ -278,22 +278,32 @@
   {% if not is_recommended %}
   <div class="result-card mt-4 mb-4 animate-slide-up">
     <div class="result-card-label text-primary mb-2">
-      <i class="bi bi-lightbulb-fill me-2"></i>Rekomendasi Pekerjaan
+      <i class="bi bi-lightbulb-fill me-2"></i>Rekomendasi Pekerjaan Alternatif
     </div>
     
     <p class="text-secondary mb-4">
-      Berdasarkan hasil identifikasi warna Anda, beberapa kategori pekerjaan yang memiliki tingkat kesesuaian paling tinggi adalah:
+      Berdasarkan profil minat RIASEC Anda dan hasil tes kemampuan pengenalan warna, berikut adalah beberapa kategori pekerjaan alternatif yang paling sesuai dan aman terhadap kondisi penglihatan Anda:
     </p>
 
     {% if occupation_recommendations %}
     <div class="row g-3">
       {% for item in occupation_recommendations %}
       <div class="col-md-6 col-lg-4">
-        <div class="recommended-job-card">
+        <div class="recommended-job-card h-100">
           <div class="job-card-rank">{{ loop.index }}</div>
           <div class="job-card-content">
-            <i class="bi bi-briefcase-fill me-2 text-primary"></i>
-            <span class="fw-semibold text-primary-dark">{{ item.category }}</span>
+            <div class="d-flex align-items-center mb-1">
+              <i class="bi bi-briefcase-fill me-2 text-primary"></i>
+              <span class="fw-semibold text-primary-dark">{{ item.category }}</span>
+            </div>
+            {% if item.occupation %}
+            <div class="small text-muted mb-1">
+              <strong>Profesi:</strong> {{ item.occupation }}
+            </div>
+            {% endif %}
+            <div class="small text-secondary">
+              Minat: <strong>{{ item.similarity }}%</strong> &middot; Tuntutan Warna: <strong>{{ item.color_req }}</strong>
+            </div>
           </div>
         </div>
       </div>

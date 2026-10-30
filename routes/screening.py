@@ -189,12 +189,19 @@ def result():
 
     is_recommended = prediction.get("label", "").strip() == "Direkomendasikan"
 
-    # Rekomendasi pekerjaan: ranking RIASEC O*NET (utama), warna hanya informasi.
-    # UI lama menampilkan kartu per kategori, jadi hasil ranking dipetakan ke
-    # kategori unik tanpa mengubah urutan minat.
+    # Rekomendasi pekerjaan alternatif (Opsi 2):
+    # 1. Ranking berbasis kesesuaian minat RIASEC O*NET.
+    # 2. Karier pilihan yang tidak lolos otomatis dikecualikan (exclude chosen career).
+    # 3. Bidang medis ([Kesehatan]) otomatis diblokir jika user memiliki defisiensi warna (< 85%).
+    # 4. Memprioritaskan pekerjaan yang aman terhadap penglihatan warna:
+    #    - Jika skor warna rendah (< 50%), ambang batas aman adalah max(user_pct, 25.0)
+    #      (pekerjaan bertuntutan warna sangat rendah <= 25 seperti audio/penyiaran, penulisan, administrasi).
+    #    - Jika skor warna >= 50%, ambang batas toleransi mengikuti user_pct.
+    # 5. Okupasi diurutkan murni berdasarkan kemiripan minat RIASEC tertinggi.
     summary = summary or {}
     riasec_scores = summary.get("riasec", {})
     user_pct = ishihara_result.get("percentage", 0.0) if ishihara_result else 0.0
+    chosen_career = (summary.get("karier_pilihan") or "").strip()
     occupation_recommendations = []
 
     if not is_recommended:
@@ -207,20 +214,71 @@ def result():
             riasec_scores,
             occupations,
             method="pearson",
-            limit=100,
-            min_similarity=RIASEC_MIN_SIMILARITY,
+            limit=500,
+            min_similarity=None,
             user_percentage=user_pct,
         )
+
+        safe_color_limit = max(user_pct, 25.0) if user_pct < 50.0 else user_pct
+
         seen = set()
+        # Tahap 1: Okupasi yang memenuhi batas aman penglihatan warna
         for item in ranking["items"]:
-            # Kartu UI lama menampilkan kategori; lewati okupasi tanpa kategori.
             category = item["category"]
-            if not category or category in seen:
+            if not category or category == chosen_career or category in seen:
                 continue
-            seen.add(category)
-            occupation_recommendations.append({"category": category})
-            if len(occupation_recommendations) >= 6:
-                break
+            # Proteksi Domain Medis:
+            if user_pct < 85.0 and not chosen_career.startswith("[Kesehatan]") and category.startswith("[Kesehatan]"):
+                continue
+
+            col_req = item.get("color", {}).get("requirement")
+            if col_req is None:
+                from utils.preprocessor import CAREER_MAPPING
+                col_req = CAREER_MAPPING.get(category, ("4", 25))[1]
+
+            if col_req <= safe_color_limit:
+                seen.add(category)
+                occupation_recommendations.append({
+                    "category": category,
+                    "occupation": item.get("occupation_id") or item["occupation"],
+                    "similarity": round(item["similarity"], 1),
+                    "color_req": round(float(col_req), 1),
+                    "status": "meets",
+                })
+                if len(occupation_recommendations) >= 6:
+                    break
+
+        # Tahap 2: Jika kategori aman < 6, lengkapi dengan alternatif terdekat (RIASEC tertinggi)
+        if len(occupation_recommendations) < 6:
+            remaining = [
+                item for item in ranking["items"]
+                if item["category"] and item["category"] != chosen_career and item["category"] not in seen
+            ]
+            if user_pct < 85.0 and not chosen_career.startswith("[Kesehatan]"):
+                remaining = [item for item in remaining if not item["category"].startswith("[Kesehatan]")]
+
+            # Urutkan sisa slot berdasarkan kesesuaian minat RIASEC tertinggi
+            remaining.sort(key=lambda x: -x["similarity"])
+
+            for item in remaining:
+                category = item["category"]
+                if category in seen:
+                    continue
+                seen.add(category)
+                col_req = item.get("color", {}).get("requirement")
+                if col_req is None:
+                    from utils.preprocessor import CAREER_MAPPING
+                    col_req = CAREER_MAPPING.get(category, ("4", 25))[1]
+
+                occupation_recommendations.append({
+                    "category": category,
+                    "occupation": item.get("occupation_id") or item["occupation"],
+                    "similarity": round(item["similarity"], 1),
+                    "color_req": round(float(col_req), 1),
+                    "status": "stretch",
+                })
+                if len(occupation_recommendations) >= 6:
+                    break
 
     return render_template(
         "result.html",
