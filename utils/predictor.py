@@ -243,6 +243,34 @@ def _is_object_like(series: pd.Series) -> bool:
     return dt == object or isinstance(dt, pd.StringDtype)
 
 
+def _nearest_career(value: str, known_classes: list) -> str:
+    """
+    Petakan label karier yang tidak dikenal model ke karier terlatih dengan
+    ColorReq terdekat.
+
+    Model hanya dilatih pada 10 karier asli, sedangkan form menawarkan 27.
+    Sebelumnya label tak dikenal jatuh ke kelas pertama (Administrasi) secara
+    diam-diam, sehingga user yang memilih Polisi sebenarnya dinilai sebagai
+    Administrasi.
+    """
+    if value in known_classes:
+        return value
+
+    from utils.preprocessor import CAREER_MAPPING
+
+    known_careers = [c for c in known_classes if c in CAREER_MAPPING]
+    if value not in CAREER_MAPPING or not known_careers:
+        return value
+
+    target = CAREER_MAPPING[value][1]
+    nearest = min(known_careers, key=lambda c: abs(CAREER_MAPPING[c][1] - target))
+    logger.info(
+        f"Karier '{value}' tidak ada di model; dipetakan ke '{nearest}' "
+        f"(ColorReq {target} -> {CAREER_MAPPING[nearest][1]})."
+    )
+    return nearest
+
+
 def _encode_features(df: pd.DataFrame) -> pd.DataFrame:
     """
     Encode kolom kategorikal menggunakan encoders.pkl.
@@ -264,6 +292,11 @@ def _encode_features(df: pd.DataFrame) -> pd.DataFrame:
         label_encoders = _encoders.get('label_encoders', _encoders)
         for col, encoder in label_encoders.items():
             if col in df_out.columns:
+                known_classes = list(encoder.classes_)
+                if col == "Karier":
+                    df_out[col] = df_out[col].apply(
+                        lambda v: _nearest_career(str(v), known_classes)
+                    )
                 try:
                     df_out[col] = encoder.transform(df_out[col].astype(str))
                 except ValueError as e:
@@ -271,7 +304,6 @@ def _encode_features(df: pd.DataFrame) -> pd.DataFrame:
                         f"Nilai tidak dikenal di kolom '{col}': {df_out[col].values}. "
                         f"Menggunakan kelas pertama sebagai fallback. Error: {e}"
                     )
-                    known_classes = list(encoder.classes_)
                     df_out[col] = df_out[col].apply(
                         lambda v: v if v in known_classes else known_classes[0]
                     )

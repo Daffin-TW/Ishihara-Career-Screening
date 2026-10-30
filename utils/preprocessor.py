@@ -6,6 +6,7 @@ import os
 import re
 import csv
 import logging
+import statistics
 
 logger = logging.getLogger(__name__)
 
@@ -425,94 +426,23 @@ def build_summary(form_data: dict, ishihara_images: list) -> dict:
 
 
 # ────────────────────────────────────────────────────────────────────────────────
-# REKOMENDASI PEKERJAAN BERDASARKAN IMPORTANCE
+# REKOMENDASI PEKERJAAN – lihat utils/recommender.py
 # ────────────────────────────────────────────────────────────────────────────────
 
-def get_occupation_recommendations(user_percentage: float, file_path: str, top_n: int = 6) -> list:
-    """
-    Rekomendasikan kategori pekerjaan berdasarkan persentase nilai identifikasi warna pengguna
-    menggunakan file occupation_importance.csv.
+# Pemetaan pendidikan form -> batas Job Zone O*NET (dipakai untuk info kelayakan).
+PENDIDIKAN_JOB_ZONE = {
+    "SMA / SMK / Sederajat": 2,
+    "Diploma (D1-D4)": 3,
+    "Sarjana (S1)": 4,
+    "Pascasarjana (S2/S3)": 5,
+}
 
-    Parameters
-    ----------
-    user_percentage : float
-        Persentase identifikasi warna pengguna (0-100).
-    file_path : str
-        Path ke file occupation_importance.csv.
-    top_n : int
-        Jumlah maksimal kategori pekerjaan unik yang direkomendasikan.
 
-    Returns
-    -------
-    list of dict:
-        [{'category': str, 'importance': float, 'diff': float}, ...]
-    """
-    if not file_path or not os.path.exists(file_path):
-        logger.error(f"File occupation_importance.csv tidak ditemukan di: {file_path}")
-        return []
-
-    rows = []
-    try:
-        with open(file_path, "r", encoding="utf-8-sig") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                imp_str = (row.get("Importance") or row.get("\ufeffImportance") or "").strip()
-                category = (row.get("OccupationCategory") or "").strip()
-                if not imp_str or not category:
-                    continue
-                try:
-                    importance_val = float(imp_str.replace(",", "."))
-                    diff = abs(importance_val - user_percentage)
-                    is_within = 0 if importance_val <= user_percentage else 1
-                    rows.append({
-                        "category": category,
-                        "importance": importance_val,
-                        "diff": diff,
-                        "is_within": is_within
-                    })
-                except ValueError:
-                    continue
-    except Exception as e:
-        logger.error(f"Error membaca occupation_importance.csv: {e}")
-        return []
-
-    if not rows:
-        return []
-
-    # Urutkan berdasarkan:
-    # 1. is_within (0 = pekerjaan dengan Importance <= user_percentage diutamakan)
-    # 2. diff (kedekatan nilai Importance dengan user_percentage)
-    rows.sort(key=lambda r: (r["is_within"], r["diff"]))
-
-    # Deduplikasi OccupationCategory, pertahankan urutan kemunculan pertama
-    seen_categories = set()
-    recommendations = []
-    for r in rows:
-        cat = r["category"]
-        if cat not in seen_categories:
-            seen_categories.add(cat)
-            recommendations.append({
-                "category": cat,
-                "importance": r["importance"],
-                "diff": round(r["diff"], 2)
-            })
-            if len(recommendations) >= top_n:
-                break
-
-    # Jika tidak ada rekomendasi yang terkumpul, lakukan fallback dengan mengurutkan berdasarkan diff saja
-    if not recommendations:
-        rows.sort(key=lambda r: r["diff"])
-        for r in rows:
-            cat = r["category"]
-            if cat not in seen_categories:
-                seen_categories.add(cat)
-                recommendations.append({
-                    "category": cat,
-                    "importance": r["importance"],
-                    "diff": round(r["diff"], 2)
-                })
-                if len(recommendations) >= top_n:
-                    break
-
-    return recommendations
-
+def job_zone_status(job_zone, max_job_zone):
+    """Bandingkan Job Zone okupasi dengan kesiapan pendidikan pengguna."""
+    if job_zone is None or max_job_zone is None:
+        return {"status": "unknown", "zone": job_zone}
+    return {
+        "status": "meets" if job_zone <= max_job_zone else "above",
+        "zone": job_zone,
+    }

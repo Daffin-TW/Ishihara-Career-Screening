@@ -16,12 +16,16 @@ from utils.preprocessor import (
     calculate_riasec,
     build_feature_dict,
     build_summary,
-    get_occupation_recommendations,
     CAREER_CHOICES,
     PENDIDIKAN_CHOICES,
     JK_CHOICES,
 )
 from utils.predictor import predict, is_model_loaded, get_feature_list, load_model
+from utils.recommender import (
+    load_occupations,
+    rank_occupations,
+    RIASEC_MIN_SIMILARITY,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -183,15 +187,40 @@ def result():
         "Berat" : "danger",
     }.get(severity, "secondary")
 
-    # Fitur Rekomendasi Pekerjaan berdasarkan Importance (HANYA jika prediksi BUKAN 'Direkomendasikan')
-    label_text = prediction.get("label", "").strip()
-    is_recommended = (label_text == "Direkomendasikan")
+    is_recommended = prediction.get("label", "").strip() == "Direkomendasikan"
+
+    # Rekomendasi pekerjaan: ranking RIASEC O*NET (utama), warna hanya informasi.
+    # UI lama menampilkan kartu per kategori, jadi hasil ranking dipetakan ke
+    # kategori unik tanpa mengubah urutan minat.
+    summary = summary or {}
+    riasec_scores = summary.get("riasec", {})
+    user_pct = ishihara_result.get("percentage", 0.0) if ishihara_result else 0.0
     occupation_recommendations = []
 
     if not is_recommended:
-        user_pct = ishihara_result.get("percentage", 0.0) if ishihara_result else 0.0
-        importance_path = current_app.config.get("OCCUPATION_IMPORTANCE_PATH")
-        occupation_recommendations = get_occupation_recommendations(user_pct, importance_path, top_n=6)
+        occupations = load_occupations(
+            current_app.config.get("OCCUPATION_RIASEC_PATH"),
+            current_app.config.get("OCCUPATION_IMPORTANCE_PATH"),
+            current_app.config.get("OCCUPATION_MASTER_PATH"),
+        )
+        ranking = rank_occupations(
+            riasec_scores,
+            occupations,
+            method="pearson",
+            limit=100,
+            min_similarity=RIASEC_MIN_SIMILARITY,
+            user_percentage=user_pct,
+        )
+        seen = set()
+        for item in ranking["items"]:
+            # Kartu UI lama menampilkan kategori; lewati okupasi tanpa kategori.
+            category = item["category"]
+            if not category or category in seen:
+                continue
+            seen.add(category)
+            occupation_recommendations.append({"category": category})
+            if len(occupation_recommendations) >= 6:
+                break
 
     return render_template(
         "result.html",

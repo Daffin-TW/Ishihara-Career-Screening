@@ -35,5 +35,13 @@ class Config:
     _root_importance = os.path.join(BASE_DIR, "occupation_importance.csv")
     OCCUPATION_IMPORTANCE_PATH = _src_importance if os.path.exists(_src_importance) else _root_importance
 
+    _src_riasec = os.path.join(BASE_DIR, "src", "data", "occupation_riasec.csv")
+    _root_riasec = os.path.join(BASE_DIR, "occupation_riasec.csv")
+    OCCUPATION_RIASEC_PATH = _src_riasec if os.path.exists(_src_riasec) else _root_riasec
+
+    _src_master = os.path.join(BASE_DIR, "src", "data", "all_occupations.csv")
+    _root_master = os.path.join(BASE_DIR, "all_occupations.csv")
+    OCCUPATION_MASTER_PATH = _src_master if os.path.exists(_src_master) else _root_master
+
     # ── Upload ───────────────────────────────────────────────────────────────
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB max upload

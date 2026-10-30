@@ -37,8 +37,9 @@ Ishihara-Career-Screening/
 │
 ├── utils/                     # Modul utilitas & preprocessing
 │   ├── __init__.py
-│   ├── preprocessor.py        # Preprocessing data form, Ishihara, RIASEC, & feature engineering
-│   └── predictor.py           # Pemuatan model XGBoost, encoder, dan inferensi
+│   ├── preprocessor.py        # Preprocessing form, Ishihara, RIASEC, & feature engineering
+│   ├── predictor.py           # Pemuatan model XGBoost, encoder, dan inferensi
+│   └── recommender.py         # Ranking pekerjaan berbasis RIASEC O*NET + status warna
 │
 ├── templates/                 # Template HTML Jinja2
 │   ├── base.html              # Layout utama (Navbar, Footer, Dark Mode Toggle)
@@ -59,6 +60,10 @@ Ishihara-Career-Screening/
 └── src/                       # Resource model & dataset bawaan
     ├── data/
     │   ├── dummy_data.csv     # Dataset acuan struktur data
+    │   ├── all_occupations.csv       # Daftar occupation O*NET + Job Zone
+    │   ├── occupation_importance.csv # Tuntutan warna (Importance) per occupation
+    │   ├── occupation_riasec.csv     # O*NET Career Interest Types (OI + IH) per occupation
+    │   ├── Career Interest Types.xlsx # Sumber mentah O*NET (dipakai build_riasec_csv.py)
     │   └── questions.txt      # Sumber pertanyaan form & karier
     ├── img/
     │   └── ishihara/          # Gambar plat tes Ishihara (1-12.png, dll.)
